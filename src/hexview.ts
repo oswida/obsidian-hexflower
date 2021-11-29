@@ -1,15 +1,17 @@
 import { DiceImage } from "assets/dice";
 import { ResetImage } from "assets/reset";
+import { Events } from "obsidian";
 import { HexTemplateBase } from "template";
 import { HandImage } from "./assets/hand";
 import { DirectionsTemplate } from "./template";
 
-export class HexView {
+export class HexView extends Events {
 	view: HTMLDivElement;
 	data: any;
 	selected: number;
 
 	constructor(data: any) {
+		super();
 		this.data = data;
 		this.selected = 10;
 		this.refresh();
@@ -27,7 +29,7 @@ export class HexView {
 				"$" + hname + ".",
 				'<span class="' +
 					selclass +
-					'" data-title="' +
+					'" aria-label="' +
 					hname +
 					": " +
 					this.data.values[i - 1] +
@@ -52,17 +54,21 @@ export class HexView {
 		// icons row
 		const icons = document.createElement("div");
 		icons.className += "hicons";
-		const tmp = document.createElement("div");
+		let tmp = document.createElement("span");
 		tmp.innerHTML = DiceImage.trim();
-		const ic1 = tmp.firstChild;
-		(ic1 as HTMLElement).setAttribute("data-title", "Roll");
-		icons.appendChild(ic1);
+		tmp.onclick = this.actionRoll;
+		tmp.setAttribute("aria-label", "Roll");
+		icons.appendChild(tmp);
+		tmp = document.createElement("span");
+		tmp.setAttribute("aria-label", "Manual set");
+		tmp.onclick = this.actionManual;
 		tmp.innerHTML = HandImage.trim();
-		const ic2 = tmp.firstChild;
-		icons.appendChild(ic2);
+		icons.appendChild(tmp);
+		tmp = document.createElement("span");
+		tmp.setAttribute("aria-label", "Reset");
+		tmp.onclick = this.actionReset;
 		tmp.innerHTML = ResetImage.trim();
-		const ic3 = tmp.firstChild;
-		icons.appendChild(ic3);
+		icons.appendChild(tmp);
 
 		// final table
 		const table = document.createElement("table");
@@ -95,5 +101,23 @@ export class HexView {
 	setSelected(num: number) {
 		this.selected = num;
 		this.refresh();
+	}
+
+	async actionRoll(evt: MouseEvent) {
+		evt.stopPropagation();
+		evt.stopImmediatePropagation();
+		console.log("actionRoll");
+	}
+
+	async actionManual(evt: MouseEvent) {
+		evt.stopPropagation();
+		evt.stopImmediatePropagation();
+		console.log("actionManual");
+	}
+
+	async actionReset(evt: MouseEvent) {
+		evt.stopPropagation();
+		evt.stopImmediatePropagation();
+		console.log("actionReset");
 	}
 }
