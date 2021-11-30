@@ -23,7 +23,8 @@ export default class HexflowerPlugin extends Plugin {
 				ctx: MarkdownPostProcessorContext
 			) => {
 				const hexdata = parseYaml(source);
-				const hview = new HexView(this.app, hexdata);
+				const hview = new HexView(this.app, hexdata, ctx);
+
 				el.appendChild(hview.view);
 			}
 		);

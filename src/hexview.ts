@@ -1,9 +1,15 @@
 import { DiceImage } from "assets/dice";
 import { ResetImage } from "assets/reset";
 import { ResetModal } from "modal";
-import { App, Events, Notice } from "obsidian";
+import {
+	App,
+	Events,
+	MarkdownPostProcessorContext,
+	stringifyYaml,
+} from "obsidian";
 import { HexTemplateBase } from "template";
 import { HandImage } from "./assets/hand";
+import { FindHexflowerText, ReplaceInCurrentFile } from "./parser";
 import { DirectionsTemplate } from "./template";
 
 export class HexView extends Events {
@@ -11,12 +17,14 @@ export class HexView extends Events {
 	data: any;
 	selected: number;
 	app: App;
+	context: MarkdownPostProcessorContext;
 
-	constructor(app: App, data: any) {
+	constructor(app: App, data: any, context: MarkdownPostProcessorContext) {
 		super();
 		this.app = app;
+		this.context = context;
 		this.data = data;
-		this.selected = 10;
+		this.selected = data.current;
 		this.refresh();
 	}
 
@@ -115,17 +123,27 @@ export class HexView extends Events {
 	async actionManual(evt: MouseEvent) {
 		evt.stopPropagation();
 		evt.stopImmediatePropagation();
-		console.log(this.app);
-		const dlg = new ResetModal(this.app, (value: string) => {
-			console.log("Reset", value);
-			new Notice("Hexflower reset");
-		});
-		dlg.open();
 	}
 
 	async actionReset(evt: MouseEvent) {
 		evt.stopPropagation();
 		evt.stopImmediatePropagation();
-		console.log("actionReset");
+		const dlg = new ResetModal(this.app, async (value: string) => {
+			const num = Number.parseInt(value);
+			if (Number.isNaN(num)) {
+				return;
+			}
+			this.data.current = num;
+			this.selected = num;
+			const result = await FindHexflowerText(this.app, this.data.name);
+			ReplaceInCurrentFile(
+				this.app,
+				result.filePosition,
+				result.filePosition + result.length,
+				"```hexflower\n" + stringifyYaml(this.data) + "```"
+			);
+			// new Notice("Hexflower reset");
+		});
+		dlg.open();
 	}
 }
