@@ -1,6 +1,7 @@
 import { DiceImage } from "assets/dice";
 import { ResetImage } from "assets/reset";
-import { Events } from "obsidian";
+import { ResetModal } from "modal";
+import { App, Events, Notice } from "obsidian";
 import { HexTemplateBase } from "template";
 import { HandImage } from "./assets/hand";
 import { DirectionsTemplate } from "./template";
@@ -9,9 +10,11 @@ export class HexView extends Events {
 	view: HTMLDivElement;
 	data: any;
 	selected: number;
+	app: App;
 
-	constructor(data: any) {
+	constructor(app: App, data: any) {
 		super();
+		this.app = app;
 		this.data = data;
 		this.selected = 10;
 		this.refresh();
@@ -56,17 +59,17 @@ export class HexView extends Events {
 		icons.className += "hicons";
 		let tmp = document.createElement("span");
 		tmp.innerHTML = DiceImage.trim();
-		tmp.onclick = this.actionRoll;
+		tmp.onclick = this.actionRoll.bind(this);
 		tmp.setAttribute("aria-label", "Roll");
 		icons.appendChild(tmp);
 		tmp = document.createElement("span");
 		tmp.setAttribute("aria-label", "Manual set");
-		tmp.onclick = this.actionManual;
+		tmp.onclick = this.actionManual.bind(this);
 		tmp.innerHTML = HandImage.trim();
 		icons.appendChild(tmp);
 		tmp = document.createElement("span");
 		tmp.setAttribute("aria-label", "Reset");
-		tmp.onclick = this.actionReset;
+		tmp.onclick = this.actionReset.bind(this);
 		tmp.innerHTML = ResetImage.trim();
 		icons.appendChild(tmp);
 
@@ -112,7 +115,12 @@ export class HexView extends Events {
 	async actionManual(evt: MouseEvent) {
 		evt.stopPropagation();
 		evt.stopImmediatePropagation();
-		console.log("actionManual");
+		console.log(this.app);
+		const dlg = new ResetModal(this.app, (value: string) => {
+			console.log("Reset", value);
+			new Notice("Hexflower reset");
+		});
+		dlg.open();
 	}
 
 	async actionReset(evt: MouseEvent) {

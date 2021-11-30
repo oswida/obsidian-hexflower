@@ -1,23 +1,32 @@
-import { Plugin } from "obsidian";
-import { HexflowerHandler } from "./mdprocessor";
+import { HexView } from "hexview";
+import { MarkdownPostProcessorContext, parseYaml, Plugin } from "obsidian";
 
-// Remember to rename these classes and interfaces!
+interface HexflowerPluginSettings {
+	mySetting: string;
+}
 
-// interface HexflowerPluginSettings {
-// 	mySetting: string;
-// }
-
-// const DEFAULT_SETTINGS: MyPluginSettings = {
-// 	mySetting: "default",
-// };
+const DEFAULT_SETTINGS: HexflowerPluginSettings = {
+	mySetting: "default",
+};
 
 export default class HexflowerPlugin extends Plugin {
-	// settings: MyPluginSettings;
+	settings: HexflowerPluginSettings;
 
 	async onload() {
-		// await this.loadSettings();
+		await this.loadSettings();
 
-		this.registerMarkdownCodeBlockProcessor("hexflower", HexflowerHandler);
+		this.registerMarkdownCodeBlockProcessor(
+			"hexflower",
+			(
+				source: string,
+				el: HTMLElement,
+				ctx: MarkdownPostProcessorContext
+			) => {
+				const hexdata = parseYaml(source);
+				const hview = new HexView(this.app, hexdata);
+				el.appendChild(hview.view);
+			}
+		);
 
 		// This creates an icon in the left ribbon.
 		// const ribbonIconEl = this.addRibbonIcon(
@@ -90,13 +99,13 @@ export default class HexflowerPlugin extends Plugin {
 
 	onunload() {}
 
-	// async loadSettings() {
-	// 	this.settings = Object.assign(
-	// 		{},
-	// 		DEFAULT_SETTINGS,
-	// 		await this.loadData()
-	// 	);
-	// }
+	async loadSettings() {
+		this.settings = Object.assign(
+			{},
+			DEFAULT_SETTINGS,
+			await this.loadData()
+		);
+	}
 
 	// async saveSettings() {
 	// 	await this.saveData(this.settings);

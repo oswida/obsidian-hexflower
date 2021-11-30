@@ -73,3 +73,14 @@
 	width: 1.5em;
 	height: auto;
 }
+
+.hfmodalbtns {
+	text-align: right;
+	padding: 3px;
+}
+
+.hfbtn {
+	border-radius: 6;
+	padding: 3px;
+	border: #ccc 1px solid;
+}
