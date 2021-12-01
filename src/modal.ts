@@ -1,5 +1,5 @@
 import { App, Modal } from "obsidian";
-import { ResetModalTemplate } from "./template";
+import { ManualRollModalTemplate, ResetModalTemplate } from "./template";
 
 export class ResetModal extends Modal {
 	resetFunc: (value: string) => void;
@@ -40,5 +40,42 @@ export class ResetModal extends Modal {
 	onClose() {
 		const { contentEl } = this;
 		contentEl.empty();
+	}
+}
+
+export class ManualRollModal extends Modal {
+	acceptFunc: (value: string) => void;
+
+	constructor(app: App, acceptFunc: (value: string) => void) {
+		super(app);
+		this.acceptFunc = acceptFunc;
+	}
+
+	onOpen() {
+		const { contentEl } = this;
+
+		this.titleEl.setText("Manual roll");
+		contentEl.innerHTML = ManualRollModalTemplate;
+
+		// const valEl = contentEl.find("#hexvalue");
+		// const btns = contentEl.find("#buttons");
+		// if (btns && valEl) {
+		// 	const btn = document.createElement("button");
+		// 	btn.setText("Reset");
+		// 	btn.onclick = () => {
+		// 		if (this.resetFunc) {
+		// 			const sel = valEl as HTMLSelectElement;
+		// 			this.resetFunc(sel.options.item(sel.selectedIndex).text);
+		// 		}
+		// 		this.close();
+		// 	};
+		// 	const btnCancel = document.createElement("button");
+		// 	btnCancel.setText("Cancel");
+		// 	btnCancel.onclick = () => {
+		// 		this.close();
+		// 	};
+		// 	btns.appendChild(btn);
+		// 	btns.appendChild(btnCancel);
+		// }
 	}
 }

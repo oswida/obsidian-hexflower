@@ -1,5 +1,4 @@
 import { DiceImage } from "assets/dice";
-import { ResetImage } from "assets/reset";
 import { ResetModal } from "modal";
 import {
 	App,
@@ -8,55 +7,67 @@ import {
 	Notice,
 	stringifyYaml,
 } from "obsidian";
-import { HexTemplateBase, NavigationHexTemplate } from "template";
+import { NavigationHexTemplate } from "template";
 import { HandImage } from "./assets/hand";
-import { HexagonImage } from "./assets/hexagon";
+import { HexflowerImage } from "./assets/hexflower";
+import { NavigationImage } from "./assets/navigation";
 import { FindHexflowerText, ReplaceInCurrentFile } from "./parser";
 
-const makeNavigation = (
-	data: any,
-	parent: HTMLDivElement,
-	roll: string
-): HTMLSpanElement => {
-	let hexinfo = document.createElement("td");
-	let txt = NavigationHexTemplate;
+const fillNavigationRolls = (data: any, roll: string): string => {
+	let txt = NavigationImage.trim();
 	txt = txt.replace("{N}", data.n);
 	txt = txt.replace("{NE}", data.ne);
 	txt = txt.replace("{NW}", data.nw);
 	txt = txt.replace("{S}", data.s);
-	txt = txt.replace("{SW}", data.sw);
 	txt = txt.replace("{SE}", data.se);
+	txt = txt.replace("{SW}", data.sw);
 	if (data.in) {
 		txt = txt.replace("{IN}", data.in);
 	} else {
 		txt = txt.replace("{IN}", "");
 	}
+	txt = txt.replace("{ROLL}", roll);
 
-	hexinfo.innerHTML = txt;
+	return txt;
+};
+
+const makeNavigation = (
+	data: any,
+	parent: HTMLDivElement,
+	roll: string
+): HTMLSpanElement[] => {
+	var retv: HTMLSpanElement[] = [];
+
+	let hexinfo = document.createElement("td");
+	hexinfo.innerHTML = NavigationHexTemplate.trim();
+
 	const inside = hexinfo.find("#inside");
 	if (inside) {
 		const t = createEl("span");
 		t.innerHTML = "<br/><b>" + roll + "</b>";
 		inside.appendChild(t);
 	}
-	const tab = hexinfo.find("#bkgtable");
-	tab.className += "navtext";
-	var encoded = window.btoa(HexagonImage);
-	tab.style.background =
-		"url(data:image/svg+xml;base64," +
-		encoded +
-		") no-repeat center center";
-
+	const navinfo = hexinfo.find("#navinfo");
+	if (navinfo) {
+		var encoded = window.btoa(fillNavigationRolls(data, roll));
+		navinfo.style.background =
+			"url(data:image/svg+xml;base64," +
+			encoded +
+			") no-repeat center center";
+	}
 	const e = hexinfo.find("#navicons");
-	let tmp = createSpan();
-	tmp.innerHTML = DiceImage.trim();
-	tmp.setAttribute("aria-label", "Roll");
-	e.appendChild(tmp);
-	tmp = createSpan();
-	tmp.setAttribute("aria-label", "Manual roll");
-	// tmp.onclick = this.actionManual.bind(this);
-	tmp.innerHTML = HandImage.trim();
-	e.appendChild(tmp);
+	if (e) {
+		let tmp = createSpan();
+		tmp.innerHTML = DiceImage.trim();
+		tmp.setAttribute("aria-label", "Roll");
+		e.appendChild(tmp);
+		retv[0] = tmp;
+		tmp = createSpan();
+		tmp.setAttribute("aria-label", "Manual result");
+		tmp.innerHTML = HandImage.trim();
+		e.appendChild(tmp);
+		retv[1] = tmp;
+	}
 
 	const d = hexinfo.find("#navdesc");
 	if (d) {
@@ -64,7 +75,7 @@ const makeNavigation = (
 	}
 
 	parent.appendChild(hexinfo);
-	return tmp;
+	return retv;
 };
 
 export class HexView extends Events {
@@ -84,35 +95,37 @@ export class HexView extends Events {
 	}
 
 	refresh() {
-		const pre = document.createElement("pre");
-		pre.className += "hfpre";
-		let hexview = HexTemplateBase();
-		// fill hexes
+		// hexflower hexes
+		const pre = createDiv();
+		pre.innerHTML = HexflowerImage.trim();
+		pre.className += "hexblock";
 		for (let i = 1; i <= 19; i++) {
-			const hname = i.toString();
-			const selclass = this.selected == i ? "hfsel" : "";
-			hexview = hexview.replace(
-				"$" + hname + ".",
-				'<span class="' +
-					selclass +
-					'" aria-label="' +
-					hname +
-					": " +
-					this.data.values[i - 1] +
-					'">' +
-					hname +
-					" </span>"
-			);
+			let tmp = pre.find("#h" + i);
+			if (tmp) {
+				if (i == this.selected) {
+					tmp.style.fill = "coral";
+				} else {
+					tmp.style.fill = "white";
+				}
+			}
+			tmp.setAttribute("aria-label", this.data.values[i - 1]);
+			tmp = pre.find("#c" + i);
+			if (tmp) {
+				if (i == this.selected) {
+					tmp.setAttribute("fill", "coral");
+				} else {
+					tmp.setAttribute("fill", "none");
+				}
+			}
 		}
-		pre.innerHTML = hexview;
-
 		// navigation
 		const hexinfo = document.createElement("table");
 		const hirow = document.createElement("tr");
 		hexinfo.appendChild(hirow);
 		this.data.navigation.forEach((obj: any) => {
-			const el = makeNavigation(obj, hirow, this.data.roll);
-			el.onclick = this.actionRoll.bind(this);
+			const buttons = makeNavigation(obj, hirow, this.data.roll);
+			// buttons[0].onclick = this.actionRoll.bind(this);
+			// buttons[0].onclick = this.actionRoll.bind(this);
 		});
 
 		// current value
@@ -124,12 +137,11 @@ export class HexView extends Events {
 		// icons row
 		const icons = document.createElement("div");
 		icons.className += "hicons";
-		let tmp = document.createElement("span");
-
-		tmp = document.createElement("span");
-		tmp.setAttribute("aria-label", "Reset");
+		let tmp = document.createElement("button");
+		// tmp.setAttribute("aria-label", "Reset");
 		tmp.onclick = this.actionReset.bind(this);
-		tmp.innerHTML = ResetImage.trim();
+		tmp.innerHTML = "Reset";
+		// tmp.innerHTML = ResetImage.trim();
 		icons.appendChild(tmp);
 
 		// final table
@@ -137,20 +149,16 @@ export class HexView extends Events {
 		table.className += "hftab-nb";
 		let tr = document.createElement("tr");
 		let td = document.createElement("td");
+		td.appendChild(icons);
 		td.appendChild(pre);
+
 		tr.appendChild(td);
 		td = document.createElement("td");
 		td.appendChild(hexinfo);
 		tr.appendChild(td);
 		table.appendChild(tr);
-		tr = document.createElement("tr");
-		td = document.createElement("td");
-		td.setAttribute("colspan", "2");
-		td.appendChild(icons);
-		tr.appendChild(td);
-		table.appendChild(tr);
 
-		this.view = createDiv("");
+		this.view = createDiv();
 		this.view.appendChild(table);
 		this.view.appendChild(current);
 	}

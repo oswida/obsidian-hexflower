@@ -30,25 +30,7 @@ export const HexTemplateSmall = ` ___
 `;
 export const NavigationHexTemplate = `
 <div>
-<table class="hftab-nb nopad" id="bkgtable" style="margin-right: 20px">
-<tr><td class="centered nopad navtext" colspan="3" style="vertical-align:bottom;">{N}</td></tr>
-<tr>
-<td style="vertical-align:middle">
-<table class="hftab-nb nopad">
-<tr><td class="centered nopad navtext" style="padding-top:20px;">{NW}</td></tr>
-<tr><td class="centered navtext" class="nopad navtext" style="padding-top:30px;">{SW}</td></tr>
-</table>
-</td>
-<td class="centered navtext"  id="inside">{IN}</td>
-<td style="vertical-align:middle">
-<table class="hftab-nb nopad">
-<tr><td class="centered nopad navtext" style="padding-top:20px;">{NE}</td></tr>
-<tr><td class="centered nopad navtext" style="padding-top:30px;">{SE}</td></tr>
-</table>
-</td>
-</tr>
-<tr><td colspan="3" class="centered nopad navtext" style="vertical-align:top">{S}</td></tr>
-</table>
+<div class="navblock" id="navinfo"></div>
 <div class="hicons centered" id="navicons"></div>
 <div class="centered" id="navdesc" ></div>
 </div>
@@ -64,6 +46,16 @@ Starting hex number:
 <option>11</option><option>12</option><option>13</option><option>14</option><option>15</option>
 <option>16</option><option>17</option><option>18</option><option>19</option>
 </select>
+</div>
+<div id="buttons" class="hfmodalbtns"></div>
+</div>
+`;
+
+export const ManualRollModalTemplate = `
+<div>
+<div>
+Dice result: 
+<input type="text" id="dr" />
 </div>
 <div id="buttons" class="hfmodalbtns"></div>
 </div>
