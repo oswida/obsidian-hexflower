@@ -13,9 +13,12 @@ import { HandImage } from "./assets/hand";
 import { HexagonImage } from "./assets/hexagon";
 import { FindHexflowerText, ReplaceInCurrentFile } from "./parser";
 
-const makeNavigation = (data: any, parent: HTMLDivElement): HTMLDivElement => {
+const makeNavigation = (
+	data: any,
+	parent: HTMLDivElement,
+	roll: string
+): HTMLSpanElement => {
 	let hexinfo = document.createElement("td");
-	hexinfo.className += "navtext";
 	let txt = NavigationHexTemplate;
 	txt = txt.replace("{N}", data.n);
 	txt = txt.replace("{NE}", data.ne);
@@ -28,18 +31,38 @@ const makeNavigation = (data: any, parent: HTMLDivElement): HTMLDivElement => {
 	} else {
 		txt = txt.replace("{IN}", "");
 	}
+
 	hexinfo.innerHTML = txt;
+	const inside = hexinfo.find("#inside");
+	if (inside) {
+		const t = createEl("span");
+		t.innerHTML = "<br/><b>" + roll + "</b>";
+		inside.appendChild(t);
+	}
 	const tab = hexinfo.find("#bkgtable");
+	tab.className += "navtext";
 	var encoded = window.btoa(HexagonImage);
 	tab.style.background =
 		"url(data:image/svg+xml;base64," +
 		encoded +
 		") no-repeat center center";
-	const e = hexinfo.find("#hex");
-	let tmp = createDiv();
+
+	const e = hexinfo.find("#navicons");
+	let tmp = createSpan();
 	tmp.innerHTML = DiceImage.trim();
 	tmp.setAttribute("aria-label", "Roll");
 	e.appendChild(tmp);
+	tmp = createSpan();
+	tmp.setAttribute("aria-label", "Manual roll");
+	// tmp.onclick = this.actionManual.bind(this);
+	tmp.innerHTML = HandImage.trim();
+	e.appendChild(tmp);
+
+	const d = hexinfo.find("#navdesc");
+	if (d) {
+		d.innerHTML = data.desc;
+	}
+
 	parent.appendChild(hexinfo);
 	return tmp;
 };
@@ -88,7 +111,7 @@ export class HexView extends Events {
 		const hirow = document.createElement("tr");
 		hexinfo.appendChild(hirow);
 		this.data.navigation.forEach((obj: any) => {
-			const el = makeNavigation(obj, hirow);
+			const el = makeNavigation(obj, hirow, this.data.roll);
 			el.onclick = this.actionRoll.bind(this);
 		});
 
@@ -102,10 +125,7 @@ export class HexView extends Events {
 		const icons = document.createElement("div");
 		icons.className += "hicons";
 		let tmp = document.createElement("span");
-		tmp.setAttribute("aria-label", "Manual roll");
-		tmp.onclick = this.actionManual.bind(this);
-		tmp.innerHTML = HandImage.trim();
-		icons.appendChild(tmp);
+
 		tmp = document.createElement("span");
 		tmp.setAttribute("aria-label", "Reset");
 		tmp.onclick = this.actionReset.bind(this);

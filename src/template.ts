@@ -29,25 +29,29 @@ export const HexTemplateSmall = ` ___
 \\___/
 `;
 export const NavigationHexTemplate = `
+<div>
 <table class="hftab-nb nopad" id="bkgtable" style="margin-right: 20px">
-<tr><td></td><td class="centered nopad" style="vertical-align:bottom;">{N}</td><td></td></tr>
+<tr><td class="centered nopad navtext" colspan="3" style="vertical-align:bottom;">{N}</td></tr>
 <tr>
 <td style="vertical-align:middle">
-<table class="hftab-nb">
-<tr><td class="centered nopad" style="padding-top:10px;padding-right:5px">{NW}</td></tr>
-<tr><td class="centered" class="nopad" style="padding-top:30px;padding-right:5px">{SW}</td></tr>
+<table class="hftab-nb nopad">
+<tr><td class="centered nopad navtext" style="padding-top:20px;">{NW}</td></tr>
+<tr><td class="centered navtext" class="nopad navtext" style="padding-top:30px;">{SW}</td></tr>
 </table>
 </td>
-<td id="hex" class="hicons nopad centered" style="padding-left: 10px;padding-right:10px" >{IN}</td>
+<td class="centered navtext"  id="inside">{IN}</td>
 <td style="vertical-align:middle">
 <table class="hftab-nb nopad">
-<tr><td class="centered nopad" style="padding-top:10px;padding-left:5px">{NE}</td></tr>
-<tr><td class="centered nopad" style="vertical-align:bottom;padding-top: 30px;padding-left:5px">{SE}</td></tr>
+<tr><td class="centered nopad navtext" style="padding-top:20px;">{NE}</td></tr>
+<tr><td class="centered nopad navtext" style="padding-top:30px;">{SE}</td></tr>
 </table>
 </td>
 </tr>
-<tr><td></td><td class="centered nopad">{S}</td><td></td></tr>
+<tr><td colspan="3" class="centered nopad navtext" style="vertical-align:top">{S}</td></tr>
 </table>
+<div class="hicons centered" id="navicons"></div>
+<div class="centered" id="navdesc" ></div>
+</div>
 `;
 
 export const ResetModalTemplate = `
