@@ -17,16 +17,36 @@ export const HexTemplateBase = () => {
 	);
 };
 
-export const DirectionsTemplate = `
-<table class="hftab">
-<tr><td colspan="2">Roll: $roll</td></tr>
-<tr><td>N</td><td>$n</td>
-<tr><td>NE</td><td>$ne</td>
-<tr><td>NW</td><td>$nw</td>
-<tr><td>S</td><td>$s</td>
-<tr><td>SE</td><td>$se</td>
-<tr><td>SW</td><td>$sw</td>
-<tr><td>IN</td><td>$in</td>
+export const HexTemplateBig = `  ____
+ /    \\
+/  $IN \\
+\\      /
+ \\____/
+`;
+
+export const HexTemplateSmall = ` ___
+/   \\
+\\___/
+`;
+export const NavigationHexTemplate = `
+<table class="hftab-nb nopad" id="bkgtable" style="margin-right: 20px">
+<tr><td></td><td class="centered nopad" style="vertical-align:bottom;">{N}</td><td></td></tr>
+<tr>
+<td style="vertical-align:middle">
+<table class="hftab-nb">
+<tr><td class="centered nopad" style="padding-top:10px;padding-right:5px">{NW}</td></tr>
+<tr><td class="centered" class="nopad" style="padding-top:30px;padding-right:5px">{SW}</td></tr>
+</table>
+</td>
+<td id="hex" class="hicons nopad centered" style="padding-left: 10px;padding-right:10px" >{IN}</td>
+<td style="vertical-align:middle">
+<table class="hftab-nb nopad">
+<tr><td class="centered nopad" style="padding-top:10px;padding-left:5px">{NE}</td></tr>
+<tr><td class="centered nopad" style="vertical-align:bottom;padding-top: 30px;padding-left:5px">{SE}</td></tr>
+</table>
+</td>
+</tr>
+<tr><td></td><td class="centered nopad">{S}</td><td></td></tr>
 </table>
 `;
 
