@@ -1,4 +1,3 @@
-export const HexflowerImage = `
 <svg
     
    id="svg7093"
@@ -808,4 +807,3 @@ export const HexflowerImage = `
        id="c19" />
   </g>
 </svg>
-`;

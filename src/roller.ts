@@ -1,4 +1,5 @@
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
+import { HfNavDef } from "common/definition";
 
 const HexMoveMap: Record<string, any> = {
 	"1": {
@@ -174,23 +175,26 @@ const HexMoveMap: Record<string, any> = {
 	},
 };
 
+// Returns newHex and roll value
 export const RollHex = (
 	current: number,
-	navigation: any,
+	navigation: HfNavDef,
 	roll: number | null
-): number => {
+): number[] => {
 	let dr = roll;
 	if (!dr) {
 		dr = new DiceRoll(navigation.roll).total;
 	}
 	var curHex = HexMoveMap[current.toString()];
 	if (!curHex) {
-		return 10;
+		return [current, 0];
 	}
 	let direction = "in";
-	Object.keys(navigation).forEach((it: string) => {
-		if (it != "name" && it != "roll" && navigation[it]) {
-			const parts = navigation[it].toString().split(",");
+	Object.keys(navigation).forEach((it, idx) => {
+		let value = Object.values(navigation)[idx];
+		value = value ? value.toString() : "";
+		if (it != "name" && it != "roll" && value) {
+			const parts = value.split(",");
 			parts.forEach((part: any) => {
 				const num = Number.parseInt(part);
 				if (!Number.isNaN(num)) {
@@ -202,19 +206,5 @@ export const RollHex = (
 		}
 	});
 	const nextHex = curHex[direction];
-	console.log(
-		"name",
-		navigation.name,
-		"rolled",
-		dr,
-		"current",
-		current,
-		"curHex",
-		curHex,
-		"direction",
-		direction,
-		"nextHex",
-		nextHex
-	);
-	return nextHex;
+	return [nextHex, dr];
 };

@@ -16,36 +16,10 @@
 	border: none;
 }
 
-.hfpre {
-	background-color: transparent !important;
-	min-width: 15em;
-}
-
-.hfinfo {
-	color: yellowgreen;
-}
-
-.fgred {
-	color: red;
-}
-
-.hfsel {
-	color: yellow;
-}
-
 .hresult {
 	color: yellowgreen;
 	word-wrap: break-word;
-}
-
-.hicons {
-	text-align: center;
-}
-
-.hicons svg {
-	margin-right: 10px;
-	width: 1.5em;
-	height: auto;
+	margin-top: 2em;
 }
 
 .hfmodalbtns {
@@ -68,15 +42,30 @@
 	padding: 0px;
 }
 
+/* Navigation */
+
 .navblock {
-	max-width: 10em;
-	max-height: 10em;
-	min-width: 10em;
-	min-height: 10em;
-	width: 10em;
-	height: 10em;
+	max-width: 8em;
+	max-height: 8em;
+	min-width: 8em;
+	min-height: 8em;
+	width: 8em;
+	height: 8em;
+	margin-left: 2em;
 }
 
+.hicons {
+	text-align: center;
+	width: 100%;
+}
+
+.hicons svg {
+	margin-right: 10px;
+	width: 1.5em;
+	height: auto;
+}
+
+/* Hexflower main field */
 .hexblock {
 	max-width: 15em;
 	max-height: 15em;
@@ -85,4 +74,9 @@
 	width: 15em;
 	height: 15em;
 	margin-top: 1em;
+}
+
+.credentials {
+	color: grey;
+	font-size: small;
 }

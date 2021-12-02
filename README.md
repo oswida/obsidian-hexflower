@@ -1,69 +1,65 @@
-## Obsidian Hexflower Plugin
+# Obsidian Hexflower Plugin
 
-Hexflower concept explanation: <https://goblinshenchman.wordpress.com/category/hex-flower/>
+This is a widget simulating the behaviour of a Hexflower engine. A lot of information about Hexflower concept can be found at Goblin's Henchman site: <https://goblinshenchman.wordpress.com/category/hex-flower/>
 
 ## Hex positions
-<pre>
-         ___ 
-     ___/ 8 \___
- ___/ 4 \___/13 \___
-/ 1 \___/ 9 \___/17 \
-\___/ 5 \___/14 \___/
-/ 2 \___/10 \___/18 \
-\___/ 6 \___/15 \___/
-/ 3 \___/11 \___/19 \
-\___/ 7 \___/16 \___/
-    \___/12 \___/
-        \___/
-</pre>
+
+In the hexflower definition we do not use any of the official hexmap coordinate systems. It is not important because hex positions are used only to define their values. Thus hexes has been arbitrary numbered from 1 to 19 as it can be seen below.
+
+<img src="src/assets/hf.svg" width="200" alt="hex numbers"/>
+
 
 ## Hexflower block format
 
-Navigation section below presents the list of possible navigation hexes, there can be more than one for a single hexflower.
+Hexflower widget is inserted as a code block with `hexflower` keyword.
 
 <pre>
+
 ```hexflower
-name: name of your hex
-source: source of your hex
+name: Name of your hexflower
+author: original author if applicable 
+source: and some link to the source
 navigation:
-  - desc: navigation hex description
+  - name: First navigation hex
     n: 12
     ne: 2,3
     se: 4,5
     s: 6
     sw: 8,9
-    nw: 10,11
+    nw: 10
     in: 23
-  - desc: navigation hex description
+    roll: 2d6
+  - name: Second navigation
     n: 12
     ne: 2,3
     se: 4,5
     s: 6
     sw: 8,9
-    nw: 10,11
+    nw: 11,14
     in: null
+    roll: 1d6+1d8
 values:
-  - Hex 1  value
-  - Hex 2  value
-  - Hex 3  value
-  - Hex 4  value
-  - Hex 5  value
-  - Hex 6  value
-  - Hex 7  value
-  - Hex 8  value
-  - Hex 9  value
-  - Hex 10  value
-  - Hex 11  value
-  - Hex 12  value
-  - Hex 13  value
-  - Hex 14  value
-  - Hex 15  value
-  - Hex 16  value
-  - Hex 17  value
-  - Hex 18  value
-  - Hex 19  value
-roll: 2d6
-current: 15
+  - Value at hex number 1
+  - Value at hex number 2
+  - Value at hex number 3
+  - Value at hex number 4
+  - Value at hex number 5
+  - Value at hex number 6
+  - Value at hex number 7
+  - Value at hex number 8
+  - Value at hex number 9
+  - Value at hex number 10
+  - Value at hex number 11
+  - Value at hex number 12
+  - Value at hex number 13
+  - Value at hex number 14
+  - Value at hex number 15
+  - Value at hex number 16
+  - Value at hex number 17
+  - Value at hex number 18
+  - Value at hex number 19
+  - Value at hex number 20  
+current: 8
 ```
 </pre>
 
