@@ -16,8 +16,7 @@ const tpl = `
 <button id="reset-btn" style="margin-top: 1em">Reset</button>
 <table class="hftab-nb">
  <tr id="hrow">
-  <td  class="hexblock centered" id="main">
-  </td>
+  <td  class="hexblock centered" id="main"></td>
  </tr>
 </table>
 <div id="hexflower-result" class="hresult"></div>

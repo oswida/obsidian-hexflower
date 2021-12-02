@@ -20,8 +20,8 @@
 	word-wrap: break-word;
 	margin-top: 2em;
 	padding: 1em;
-	border: solid 1px #00000044;
-	border-radius: 5px;
+	/* border: solid 1px #00000044; */
+	/* border-radius: 5px; */
 }
 
 .hfmodalbtns {

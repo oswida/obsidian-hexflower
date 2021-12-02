@@ -8,7 +8,6 @@ In the hexflower definition we do not use any of the official hexmap coordinate 
 
 <img src="src/assets/hf.svg" width="200" alt="hex numbers"/>
 
-
 ## Hexflower block format
 
 Hexflower widget is inserted as a code block with `hexflower` keyword.
@@ -17,7 +16,7 @@ Hexflower widget is inserted as a code block with `hexflower` keyword.
 
 ```hexflower
 name: Name of your hexflower
-author: original author if applicable 
+author: original author if applicable
 source: and some link to the source
 navigation:
   - name: First navigation hex
@@ -64,11 +63,12 @@ current: 8
 </pre>
 
 ## TODO
+
 - [ ] hexflower block validation
 - [ ] block templates
-- [ ] plugin settings with colors and elements visibility
-- [ ] documentation 
-- [ ] hideable list of hex values below widget (for printing)
+- [x] plugin settings with colors and elements visibility
+- [ ] documentation
+- [x] hideable list of hex values below widget (for printing)
 
 ### Releasing new releases
 
@@ -93,18 +93,3 @@ current: 8
 ### Manually installing the plugin
 
 - Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
-
-### Improve code quality with eslint (optional)
-
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code.
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint .\src\`
-
-### API Documentation
-
-See <https://github.com/obsidianmd/obsidian-api>

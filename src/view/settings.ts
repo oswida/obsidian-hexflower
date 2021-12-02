@@ -13,7 +13,7 @@ export interface HexflowerPluginSettings {
 	showValueTooltips: boolean;
 }
 
-export const DEFAULT_SETTINGS: HexflowerPluginSettings = {
+export const DEFAULT_SETTINGS_DARK: HexflowerPluginSettings = {
 	navDiceColor: "#DAA520",
 	navDirectionColor: "#5f9ea0",
 	navHexColor: "#333333",
@@ -21,6 +21,19 @@ export const DEFAULT_SETTINGS: HexflowerPluginSettings = {
 	lineHexColor: "#bbbbbb",
 	textHexColor: "#ffffff",
 	resultColor: "#9acd32",
+	centerResult: false,
+	showValueTooltips: true,
+	showValues: false,
+};
+
+export const DEFAULT_SETTINGS_LIGHT: HexflowerPluginSettings = {
+	navDiceColor: "#DAA520",
+	navDirectionColor: "#275d5e",
+	navHexColor: "#cccccc",
+	selectedHexColor: "#fa5011",
+	lineHexColor: "#bbbbbb",
+	textHexColor: "#000000",
+	resultColor: "#547512",
 	centerResult: false,
 	showValueTooltips: true,
 	showValues: false,
@@ -46,11 +59,11 @@ export class HexflowerSettingsTab extends PluginSettingTab {
 
 		const div = containerEl.createEl("div", { cls: "centered" });
 		const btn = containerEl.createEl("button", {
-			text: "Reset to defaults",
+			text: "Defaults: Dark Theme",
 			cls: "settingsResetBtn",
 		});
 		btn.onclick = async () => {
-			this.plugin.settings = DEFAULT_SETTINGS;
+			this.plugin.settings = DEFAULT_SETTINGS_DARK;
 			await this.plugin.saveSettings();
 			await this.plugin.loadSettings();
 			this.plugin.app.workspace.trigger("hexflower:update-colors");
@@ -58,6 +71,19 @@ export class HexflowerSettingsTab extends PluginSettingTab {
 			this.display();
 		};
 		div.appendChild(btn);
+		const btn2 = containerEl.createEl("button", {
+			text: "Defaults: Light Theme",
+			cls: "settingsResetBtn",
+		});
+		btn2.onclick = async () => {
+			this.plugin.settings = DEFAULT_SETTINGS_LIGHT;
+			await this.plugin.saveSettings();
+			await this.plugin.loadSettings();
+			this.plugin.app.workspace.trigger("hexflower:update-colors");
+			this.plugin.app.workspace.trigger("hexflower:update-settings");
+			this.display();
+		};
+		div.appendChild(btn2);
 
 		new Setting(containerEl)
 			.setName("Center result text")

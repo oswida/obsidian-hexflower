@@ -7,11 +7,12 @@ import {
 } from "obsidian";
 import { HexView } from "view/hexview";
 import {
-	DEFAULT_SETTINGS,
+	DEFAULT_SETTINGS_DARK,
 	HexflowerPluginSettings,
 	HexflowerSettingsTab,
 } from "view/settings";
 import { HexflowerBlockSample } from "./tpl/block";
+import { DEFAULT_SETTINGS_LIGHT } from "./view/settings";
 
 declare module "obsidian" {
 	interface Workspace {
@@ -40,15 +41,6 @@ export default class HexflowerPlugin extends Plugin {
 			}
 		);
 
-		// This adds a simple command that can be triggered anywhere
-		// this.addCommand({
-		// 	id: "open-sample-modal-simple",
-		// 	name: "Open sample modal (simple)",
-		// 	callback: () => {
-		// 		new SampleModal(this.app).open();
-		// 	},
-		// });
-
 		this.addCommand({
 			id: "generate-hexflower-block",
 			name: "Generate hexflower block",
@@ -58,25 +50,17 @@ export default class HexflowerPlugin extends Plugin {
 		});
 
 		this.addSettingTab(new HexflowerSettingsTab(this.app, this));
-
-		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
-		// Using this function will automatically remove the event listener when this plugin is disabled.
-		// this.registerDomEvent(document, "click", (evt: MouseEvent) => {
-		// console.log("click", evt);
-		// });
-
-		// When registering intervals, this function will automatically clear the interval when the plugin is disabled.
-		// this.registerInterval(
-		// 	window.setInterval(() => console.log("setInterval"), 5 * 60 * 1000)
-		// );
 	}
 
 	onunload() {}
 
 	async loadSettings() {
+		const isDarkMode =
+			window.matchMedia &&
+			window.matchMedia("(prefers-color-scheme: dark)").matches;
 		this.settings = Object.assign(
 			{},
-			DEFAULT_SETTINGS,
+			isDarkMode ? DEFAULT_SETTINGS_DARK : DEFAULT_SETTINGS_LIGHT,
 			await this.loadData()
 		);
 	}
