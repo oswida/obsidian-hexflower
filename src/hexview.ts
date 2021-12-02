@@ -1,5 +1,5 @@
 import { DiceImage } from "assets/dice";
-import { ResetModal } from "modal";
+import { ManualRollModal, ResetModal } from "modal";
 import {
 	App,
 	Events,
@@ -12,8 +12,9 @@ import { HandImage } from "./assets/hand";
 import { HexflowerImage } from "./assets/hexflower";
 import { NavigationImage } from "./assets/navigation";
 import { FindHexflowerText, ReplaceInCurrentFile } from "./parser";
+import { RollHex } from "./roller";
 
-const fillNavigationRolls = (data: any, roll: string): string => {
+const fillNavigationRolls = (data: any): string => {
 	let txt = NavigationImage.trim();
 	txt = txt.replace("{N}", data.n);
 	txt = txt.replace("{NE}", data.ne);
@@ -26,35 +27,29 @@ const fillNavigationRolls = (data: any, roll: string): string => {
 	} else {
 		txt = txt.replace("{IN}", "");
 	}
-	txt = txt.replace("{ROLL}", roll);
+	txt = txt.replace("{ROLL}", data.roll);
 
 	return txt;
 };
 
 const makeNavigation = (
 	data: any,
-	parent: HTMLDivElement,
-	roll: string
+	parent: HTMLDivElement
 ): HTMLSpanElement[] => {
 	var retv: HTMLSpanElement[] = [];
 
 	let hexinfo = document.createElement("td");
 	hexinfo.innerHTML = NavigationHexTemplate.trim();
 
-	const inside = hexinfo.find("#inside");
-	if (inside) {
-		const t = createEl("span");
-		t.innerHTML = "<br/><b>" + roll + "</b>";
-		inside.appendChild(t);
-	}
 	const navinfo = hexinfo.find("#navinfo");
 	if (navinfo) {
-		var encoded = window.btoa(fillNavigationRolls(data, roll));
+		var encoded = window.btoa(fillNavigationRolls(data));
 		navinfo.style.background =
 			"url(data:image/svg+xml;base64," +
 			encoded +
 			") no-repeat center center";
 	}
+
 	const e = hexinfo.find("#navicons");
 	if (e) {
 		let tmp = createSpan();
@@ -71,7 +66,7 @@ const makeNavigation = (
 
 	const d = hexinfo.find("#navdesc");
 	if (d) {
-		d.innerHTML = data.desc;
+		d.innerHTML = data.name;
 	}
 
 	parent.appendChild(hexinfo);
@@ -123,25 +118,28 @@ export class HexView extends Events {
 		const hirow = document.createElement("tr");
 		hexinfo.appendChild(hirow);
 		this.data.navigation.forEach((obj: any) => {
-			const buttons = makeNavigation(obj, hirow, this.data.roll);
-			// buttons[0].onclick = this.actionRoll.bind(this);
-			// buttons[0].onclick = this.actionRoll.bind(this);
+			const buttons = makeNavigation(obj, hirow);
+			var func0 = (evt: MouseEvent) => {
+				this.actionRoll(evt, obj.name);
+			};
+			buttons[0].onclick = func0.bind(this);
+			var func1 = (evt: MouseEvent) => {
+				this.actionManual(evt, obj.name);
+			};
+			buttons[1].onclick = func1.bind(this);
 		});
 
 		// current value
 		const current = document.createElement("div");
-		current.innerHTML =
-			"Roll result: " + this.data.values[this.data.current - 1];
+		current.innerHTML = this.data.values[this.data.current - 1];
 		current.className += "hresult";
 
 		// icons row
 		const icons = document.createElement("div");
 		icons.className += "hicons";
 		let tmp = document.createElement("button");
-		// tmp.setAttribute("aria-label", "Reset");
 		tmp.onclick = this.actionReset.bind(this);
 		tmp.innerHTML = "Reset";
-		// tmp.innerHTML = ResetImage.trim();
 		icons.appendChild(tmp);
 
 		// final table
@@ -163,20 +161,44 @@ export class HexView extends Events {
 		this.view.appendChild(current);
 	}
 
-	setSelected(num: number) {
+	async setSelected(num: number) {
 		this.selected = num;
+		this.data.current = num;
+		this.selected = num;
+		const result = await FindHexflowerText(this.app, this.data.name);
+		ReplaceInCurrentFile(
+			this.app,
+			result.filePosition,
+			result.filePosition + result.length,
+			"```hexflower\n" + stringifyYaml(this.data) + "```"
+		);
 		this.refresh();
 	}
 
-	async actionRoll(evt: MouseEvent) {
+	async actionRoll(evt: MouseEvent, name: string) {
 		evt.stopPropagation();
 		evt.stopImmediatePropagation();
-		console.log("actionRoll");
+		const nav = this.getNavigation(name);
+		if (nav) {
+			const result = RollHex(this.data.current, nav, null);
+			this.setSelected(result);
+		}
 	}
 
-	async actionManual(evt: MouseEvent) {
+	async actionManual(evt: MouseEvent, name: string) {
 		evt.stopPropagation();
 		evt.stopImmediatePropagation();
+		const dlg = new ManualRollModal(this.app, name, (value: string) => {
+			const nav = this.getNavigation(name);
+			if (nav) {
+				const num = Number.parseInt(value);
+				if (!Number.isNaN(num)) {
+					const result = RollHex(this.data.current, nav, num);
+					this.setSelected(result);
+				}
+			}
+		});
+		dlg.open();
 	}
 
 	async actionReset(evt: MouseEvent) {
@@ -187,17 +209,17 @@ export class HexView extends Events {
 			if (Number.isNaN(num)) {
 				return;
 			}
-			this.data.current = num;
-			this.selected = num;
-			const result = await FindHexflowerText(this.app, this.data.name);
-			ReplaceInCurrentFile(
-				this.app,
-				result.filePosition,
-				result.filePosition + result.length,
-				"```hexflower\n" + stringifyYaml(this.data) + "```"
-			);
+
 			new Notice("Hexflower reset");
 		});
 		dlg.open();
+	}
+
+	getNavigation(name: string): any {
+		const el = this.data.navigation.filter((it: any) => it.name == name);
+		if (el && el.length > 0) {
+			return el[0];
+		}
+		return null;
 	}
 }

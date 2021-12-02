@@ -1,33 +1,3 @@
-export const HexTemplate = `         {r}___{/r} 
-     {r}___/ {/r}$8.{r}\\___{/r}
- ___/ $4.\\___/$13.\\___
-/ $1.\\___/ $9.\\___/$17.\\
-\\___/ $5.\\___/$14.\\___/
-/ $2.\\___/$10.\\___/$18.\\
-\\___/ $6.\\___/$15.\\___/ 
-/ $3.\\___/$11.\\___/$19.\\
-\\___/ $7.\\___/$16.\\___/
-    \\{r}___{/r}/$12.\\{r}___{/r}/
-        \\{r}___{/r}/`;
-
-export const HexTemplateBase = () => {
-	return HexTemplate.replaceAll("{r}", '<span class="fgred">').replaceAll(
-		"{/r}",
-		"</span>"
-	);
-};
-
-export const HexTemplateBig = `  ____
- /    \\
-/  $IN \\
-\\      /
- \\____/
-`;
-
-export const HexTemplateSmall = ` ___
-/   \\
-\\___/
-`;
 export const NavigationHexTemplate = `
 <div>
 <div class="navblock" id="navinfo"></div>
@@ -55,7 +25,7 @@ export const ManualRollModalTemplate = `
 <div>
 <div>
 Dice result: 
-<input type="text" id="dr" />
+<input type="text" id="dice" />
 </div>
 <div id="buttons" class="hfmodalbtns"></div>
 </div>

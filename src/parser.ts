@@ -52,3 +52,15 @@ export const ReplaceInCurrentFile = async (
 	const result = part1 + newdata + part2;
 	updateCurrentFileContent(app, result);
 };
+
+export interface NavigationBlock {
+	name: string;
+	n: string;
+	ne: string;
+	se: string;
+	s: string;
+	sw: string;
+	nw: string;
+	in: string;
+	roll: string;
+}
