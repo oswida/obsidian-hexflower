@@ -80,3 +80,7 @@
 	color: grey;
 	font-size: small;
 }
+
+.settingsResetBtn {
+	margin-bottom: 1em;
+}

@@ -1,7 +1,6 @@
 export const HexflowerImage = `
 <svg
-    
-   id="svg7093"
+   id="hexflower-main-area"
    version="1.1"
    viewBox="0 0 210 227.23264"
    xmlns="http://www.w3.org/2000/svg"
@@ -158,6 +157,7 @@ export const HexflowerImage = `
        style="stroke:#bbbbbb;stroke-width:1.2;stroke-linecap:round"
        id="line19718" />
     <line
+      data-finish-line="true"
        x1="52.799999"
        y1="23.203262"
        x2="78.900002"
@@ -242,6 +242,7 @@ export const HexflowerImage = `
        style="stroke:#bbbbbb;stroke-width:1.2;stroke-linecap:round"
        id="line19748" />
     <line
+       data-finish-line="true"
        x1="52.799999"
        y1="204.02937"
        x2="78.900002"
@@ -249,6 +250,7 @@ export const HexflowerImage = `
        style="stroke:#f10000;stroke-width:1.2;stroke-linecap:round;stroke-opacity:1"
        id="bottom1" />
     <line
+       data-finish-line="true"
        x1="91.949997"
        y1="0.60000002"
        x2="118.05"
@@ -256,6 +258,7 @@ export const HexflowerImage = `
        style="stroke:#f10000;stroke-width:1.2;stroke-linecap:round;stroke-opacity:1"
        id="top3" />
     <line
+       data-finish-line="true"
        x1="91.949997"
        y1="0.60000002"
        x2="78.900002"
@@ -263,6 +266,7 @@ export const HexflowerImage = `
        style="stroke:#f10000;stroke-width:1.2;stroke-linecap:round;stroke-opacity:1"
        id="top2" />
     <line
+       data-finish-line="true"
        x1="118.05"
        y1="0.60000002"
        x2="131.10001"
@@ -361,6 +365,7 @@ export const HexflowerImage = `
        style="stroke:#bbbbbb;stroke-width:1.2;stroke-linecap:round"
        id="line19790" />
     <line
+       data-finish-line="true"
        x1="91.949997"
        y1="226.63263"
        x2="118.05"
@@ -368,6 +373,7 @@ export const HexflowerImage = `
        style="stroke:#f10000;stroke-width:1.2;stroke-linecap:round;stroke-opacity:1"
        id="bottom2" />
     <line
+       data-finish-line="true"
        x1="131.10001"
        y1="23.203262"
        x2="157.2"
@@ -452,6 +458,7 @@ export const HexflowerImage = `
        style="stroke:#bbbbbb;stroke-width:1.2;stroke-linecap:round"
        id="line19816" />
     <line
+       data-finish-line="true"
        x1="131.10001"
        y1="204.02937"
        x2="157.2"

@@ -6,18 +6,22 @@ import {
 	Plugin,
 } from "obsidian";
 import { HexView } from "view/hexview";
+import {
+	DEFAULT_SETTINGS,
+	HexflowerPluginSettings,
+	HexflowerSettingsTab,
+} from "view/settings";
 import { HexflowerBlockSample } from "./tpl/block";
 
-interface HexflowerPluginSettings {
-	mySetting: string;
+declare module "obsidian" {
+	interface Workspace {
+		on(name: "hexflower:update-colors", callback: () => void): EventRef;
+	}
 }
-
-const DEFAULT_SETTINGS: HexflowerPluginSettings = {
-	mySetting: "default",
-};
 
 export default class HexflowerPlugin extends Plugin {
 	settings: HexflowerPluginSettings;
+	hexView: HexView;
 
 	async onload() {
 		await this.loadSettings();
@@ -30,8 +34,8 @@ export default class HexflowerPlugin extends Plugin {
 				ctx: MarkdownPostProcessorContext
 			) => {
 				const hexdata = parseYaml(source);
-				const hview = new HexView(this.app, hexdata, ctx);
-				el.appendChild(hview.view);
+				this.hexView = new HexView(this, hexdata, ctx);
+				el.appendChild(this.hexView.view);
 			}
 		);
 
@@ -52,8 +56,7 @@ export default class HexflowerPlugin extends Plugin {
 			},
 		});
 
-		// This adds a settings tab so the user can configure various aspects of the plugin
-		// this.addSettingTab(new SampleSettingTab(this.app, this));
+		this.addSettingTab(new HexflowerSettingsTab(this.app, this));
 
 		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
 		// Using this function will automatically remove the event listener when this plugin is disabled.
@@ -77,54 +80,7 @@ export default class HexflowerPlugin extends Plugin {
 		);
 	}
 
-	// async saveSettings() {
-	// 	await this.saveData(this.settings);
-	// }
+	async saveSettings() {
+		await this.saveData(this.settings);
+	}
 }
-
-// class SampleModal extends Modal {
-// 	constructor(app: App) {
-// 		super(app);
-// 	}
-
-// 	onOpen() {
-// 		const { contentEl } = this;
-// 		contentEl.setText("Woah!");
-// 	}
-
-// 	onClose() {
-// 		const { contentEl } = this;
-// 		contentEl.empty();
-// 	}
-// }
-
-// class SampleSettingTab extends PluginSettingTab {
-// 	plugin: MyPlugin;
-
-// 	constructor(app: App, plugin: MyPlugin) {
-// 		super(app, plugin);
-// 		this.plugin = plugin;
-// 	}
-
-// 	display(): void {
-// 		const { containerEl } = this;
-
-// 		containerEl.empty();
-
-// 		containerEl.createEl("h2", { text: "Settings for my awesome plugin." });
-
-// 		new Setting(containerEl)
-// 			.setName("Setting #1")
-// 			.setDesc("It's a secret")
-// 			.addText((text) =>
-// 				text
-// 					.setPlaceholder("Enter your secret")
-// 					.setValue(this.plugin.settings.mySetting)
-// 					.onChange(async (value) => {
-// 						console.log("Secret: " + value);
-// 						this.plugin.settings.mySetting = value;
-// 						await this.plugin.saveSettings();
-// 					})
-// 			);
-// 	}
-// }

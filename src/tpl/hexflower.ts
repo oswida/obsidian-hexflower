@@ -1,17 +1,22 @@
 import { HexflowerImage } from "assets/hexflower";
 import { HfDef } from "common/definition";
-
-const HexFontColor = "white";
-const HexSelColor = "coral";
+import HexflowerPlugin from "main";
 
 // Main hexflower view from SVG image
 export class HexflowerTemplate {
 	data: HfDef;
 	view: HTMLDivElement;
+	plugin: HexflowerPlugin;
 
-	constructor(data: HfDef) {
+	constructor(plugin: HexflowerPlugin, data: HfDef) {
 		this.data = data;
+		this.plugin = plugin;
 		this.refresh();
+		this.plugin.registerEvent(
+			this.plugin.app.workspace.on("hexflower:update-colors", () => {
+				this.updateColors();
+			})
+		);
 	}
 
 	refresh() {
@@ -22,9 +27,11 @@ export class HexflowerTemplate {
 			let tmp = pre.find("#h" + i);
 			if (tmp) {
 				if (i == this.data.current) {
-					tmp.style.fill = HexSelColor;
+					tmp.style.fill = this.plugin.settings.selectedHexColor;
+					tmp.setAttribute("data-selected", "true");
 				} else {
-					tmp.style.fill = HexFontColor;
+					tmp.style.fill = this.plugin.settings.textHexColor;
+					tmp.removeAttribute("data-selected");
 				}
 			}
 			tmp.setAttribute("aria-label", this.data.values[i - 1]);
@@ -33,12 +40,56 @@ export class HexflowerTemplate {
 			tmp = pre.find("#c" + i);
 			if (tmp) {
 				if (i == this.data.current) {
-					tmp.setAttribute("fill", HexSelColor);
+					tmp.setAttribute(
+						"fill",
+						this.plugin.settings.selectedHexColor
+					);
+					tmp.setAttribute("data-selected-center", "true");
 				} else {
 					tmp.setAttribute("fill", "none");
+					tmp.removeAttribute("data-selected-center");
 				}
 			}
 		}
+
+		const lines = pre.findAll("line");
+		lines.forEach((l) => {
+			if (!l.getAttribute("data-finish-line"))
+				l.style.stroke = this.plugin.settings.lineHexColor;
+		});
+
 		this.view = pre;
+	}
+
+	updateColors() {
+		const nodes = this.plugin.app.workspace.containerEl.findAll(
+			"#hexflower-main-area"
+		);
+		nodes.forEach((n) => {
+			const lines = n.findAll("line");
+			lines.forEach((l) => {
+				if (!l.getAttribute("data-finish-line"))
+					l.style.stroke = this.plugin.settings.lineHexColor;
+			});
+			const txt = n.findAll("text");
+			txt.forEach((t) => {
+				if (t.getAttribute("data-selected")) {
+					t.style.fill = this.plugin.settings.selectedHexColor;
+				} else {
+					t.style.fill = this.plugin.settings.textHexColor;
+				}
+			});
+			const cc = n.findAll("circle");
+			cc.forEach((t) => {
+				if (t.getAttribute("data-selected-center")) {
+					t.setAttribute(
+						"fill",
+						this.plugin.settings.selectedHexColor
+					);
+				} else {
+					t.setAttribute("fill", "none");
+				}
+			});
+		});
 	}
 }
