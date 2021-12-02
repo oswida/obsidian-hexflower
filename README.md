@@ -63,6 +63,12 @@ current: 8
 ```
 </pre>
 
+## TODO
+- [ ] hexflower block validation
+- [ ] block templates
+- [ ] plugin settings with colors and elements visibility
+- [ ] documentation 
+
 ### Releasing new releases
 
 - Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
