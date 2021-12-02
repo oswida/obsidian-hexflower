@@ -68,6 +68,7 @@ current: 8
 - [ ] block templates
 - [ ] plugin settings with colors and elements visibility
 - [ ] documentation 
+- [ ] hideable list of hex values below widget (for printing)
 
 ### Releasing new releases
 

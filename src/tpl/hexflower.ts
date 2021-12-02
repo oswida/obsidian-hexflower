@@ -28,6 +28,8 @@ export class HexflowerTemplate {
 				}
 			}
 			tmp.setAttribute("aria-label", this.data.values[i - 1]);
+			tmp.style.cursor = "help";
+
 			tmp = pre.find("#c" + i);
 			if (tmp) {
 				if (i == this.data.current) {

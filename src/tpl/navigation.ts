@@ -1,7 +1,8 @@
 import { NavigationImage } from "assets/navigation";
+import { HfNavDef } from "common/definition";
+import { RollHex } from "common/roll";
 import { App, Notice } from "obsidian";
-import { RollHex } from "roller";
-import { HfNavDef } from "./../common/definition";
+
 // Hex navigation section, can be more than one
 
 const tpl = `

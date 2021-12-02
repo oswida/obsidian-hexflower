@@ -1,5 +1,3 @@
-import { HfDef } from "common/definition";
-import { ResetModal } from "modal";
 import {
 	App,
 	Events,
@@ -7,9 +5,11 @@ import {
 	Notice,
 	stringifyYaml,
 } from "obsidian";
-import { FindHexflowerText, ReplaceInCurrentFile } from "./parser";
-import { HexflowerTemplate } from "./tpl/hexflower";
-import { HexNavTemplate } from "./tpl/navigation";
+import { ResetModal } from "view/modal";
+import { HfDef } from "../common/definition";
+import { HexflowerTemplate } from "../tpl/hexflower";
+import { HexNavTemplate } from "../tpl/navigation";
+import { FindHexflowerText, ReplaceInCurrentFile } from "../common/parser";
 
 const tpl = `
 <h2 id="title" aria-label=""></h2>
