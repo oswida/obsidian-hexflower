@@ -16,6 +16,7 @@ import { HexflowerBlockSample } from "./tpl/block";
 declare module "obsidian" {
 	interface Workspace {
 		on(name: "hexflower:update-colors", callback: () => void): EventRef;
+		on(name: "hexflower:update-settings", callback: () => void): EventRef;
 	}
 }
 

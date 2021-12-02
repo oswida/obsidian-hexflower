@@ -8,6 +8,9 @@ export interface HexflowerPluginSettings {
 	lineHexColor: string;
 	textHexColor: string;
 	resultColor: string;
+	centerResult: boolean;
+	showValues: boolean;
+	showValueTooltips: boolean;
 }
 
 export const DEFAULT_SETTINGS: HexflowerPluginSettings = {
@@ -18,6 +21,9 @@ export const DEFAULT_SETTINGS: HexflowerPluginSettings = {
 	lineHexColor: "#bbbbbb",
 	textHexColor: "#ffffff",
 	resultColor: "#9acd32",
+	centerResult: false,
+	showValueTooltips: true,
+	showValues: false,
 };
 
 import HexflowerPlugin from "main";
@@ -48,9 +54,49 @@ export class HexflowerSettingsTab extends PluginSettingTab {
 			await this.plugin.saveSettings();
 			await this.plugin.loadSettings();
 			this.plugin.app.workspace.trigger("hexflower:update-colors");
+			this.plugin.app.workspace.trigger("hexflower:update-settings");
 			this.display();
 		};
 		div.appendChild(btn);
+
+		new Setting(containerEl)
+			.setName("Center result text")
+			.setDesc("Center text in the result area.")
+			.addToggle((t) => {
+				t.setValue(this.plugin.settings.centerResult);
+				t.onChange(async (v) => {
+					this.plugin.settings.centerResult = v;
+					await this.plugin.saveSettings();
+					this.plugin.app.workspace.trigger(
+						"hexflower:update-settings"
+					);
+				});
+			});
+
+		new Setting(containerEl)
+			.setName("Show value tooltips")
+			.setDesc("Show tooltips with hex values.")
+			.addToggle((t) => {
+				t.setValue(this.plugin.settings.showValueTooltips);
+				t.onChange(async (v) => {
+					this.plugin.settings.showValueTooltips = v;
+					await this.plugin.saveSettings();
+				});
+			});
+
+		new Setting(containerEl)
+			.setName("Show values")
+			.setDesc("Show hexflower values below the result field.")
+			.addToggle((t) => {
+				t.setValue(this.plugin.settings.showValues);
+				t.onChange(async (v) => {
+					this.plugin.settings.showValues = v;
+					await this.plugin.saveSettings();
+					this.plugin.app.workspace.trigger(
+						"hexflower:update-settings"
+					);
+				});
+			});
 
 		containerEl.createEl("div", {
 			cls: "centered",

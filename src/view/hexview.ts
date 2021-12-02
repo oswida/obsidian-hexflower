@@ -21,6 +21,7 @@ const tpl = `
  </tr>
 </table>
 <div id="hexflower-result" class="hresult"></div>
+<div id="hexflower-value-list"></div>
 `;
 
 export class HexView extends Events {
@@ -47,6 +48,11 @@ export class HexView extends Events {
 		this.plugin.registerEvent(
 			this.plugin.app.workspace.on("hexflower:update-colors", () => {
 				this.updateColors();
+			})
+		);
+		this.plugin.registerEvent(
+			this.plugin.app.workspace.on("hexflower:update-settings", () => {
+				this.updateSettings();
 			})
 		);
 	}
@@ -91,6 +97,32 @@ export class HexView extends Events {
 		if (cres) {
 			cres.innerHTML = this.data.values[this.data.current - 1];
 			cres.style.color = this.plugin.settings.resultColor;
+			if (this.plugin.settings.centerResult) {
+				cres.style.textAlign = "center";
+			} else {
+				cres.style.textAlign = "left";
+			}
+		}
+
+		// value list
+		const lst = mainView.find("#hexflower-value-list");
+		if (lst) {
+			lst.createEl("h3", { text: "Values" });
+			const tab = lst.createEl("table");
+			for (let i = 1; i <= 19; i++) {
+				const tr = tab.createEl("tr");
+				tr.innerHTML =
+					"<td>" +
+					i.toString() +
+					"</td><td>" +
+					this.data.values[i - 1] +
+					"</td>";
+			}
+			if (this.plugin.settings.showValues) {
+				lst.style.display = "block";
+			} else {
+				lst.style.display = "none";
+			}
 		}
 
 		//credentials
@@ -142,6 +174,25 @@ export class HexView extends Events {
 			this.plugin.app.workspace.containerEl.findAll("#hexflower-result");
 		cres.forEach((n) => {
 			n.style.color = this.plugin.settings.resultColor;
+		});
+	}
+
+	updateSettings() {
+		const lst = this.plugin.app.workspace.containerEl.findAll(
+			"#hexflower-value-list"
+		);
+		lst.forEach((l) => {
+			if (this.plugin.settings.showValues) l.style.display = "block";
+			else l.style.display = "none";
+		});
+		const cres =
+			this.plugin.app.workspace.containerEl.findAll("#hexflower-result");
+		cres.forEach((c) => {
+			if (this.plugin.settings.centerResult) {
+				c.style.textAlign = "center";
+			} else {
+				c.style.textAlign = "left";
+			}
 		});
 	}
 }
