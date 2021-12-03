@@ -25,6 +25,7 @@
 		"typescript": "4.4.4"
 	},
 	"dependencies": {
-		"@dice-roller/rpg-dice-roller": "^5.1.0"
+		"@dice-roller/rpg-dice-roller": "^5.1.0",
+		"base64-arraybuffer": "^1.0.1"
 	}
 }

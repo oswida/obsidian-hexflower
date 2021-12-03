@@ -11,6 +11,8 @@ export interface HexflowerPluginSettings {
 	centerResult: boolean;
 	showValues: boolean;
 	showValueTooltips: boolean;
+	showIcons: boolean;
+	iconOpacity: number;
 }
 
 export const DEFAULT_SETTINGS_DARK: HexflowerPluginSettings = {
@@ -24,6 +26,8 @@ export const DEFAULT_SETTINGS_DARK: HexflowerPluginSettings = {
 	centerResult: false,
 	showValueTooltips: true,
 	showValues: false,
+	iconOpacity: 0.5,
+	showIcons: true,
 };
 
 export const DEFAULT_SETTINGS_LIGHT: HexflowerPluginSettings = {
@@ -37,6 +41,8 @@ export const DEFAULT_SETTINGS_LIGHT: HexflowerPluginSettings = {
 	centerResult: false,
 	showValueTooltips: true,
 	showValues: false,
+	iconOpacity: 0.5,
+	showIcons: true,
 };
 
 import HexflowerPlugin from "main";
@@ -117,6 +123,35 @@ export class HexflowerSettingsTab extends PluginSettingTab {
 				t.setValue(this.plugin.settings.showValues);
 				t.onChange(async (v) => {
 					this.plugin.settings.showValues = v;
+					await this.plugin.saveSettings();
+					this.plugin.app.workspace.trigger(
+						"hexflower:update-settings"
+					);
+				});
+			});
+
+		new Setting(containerEl)
+			.setName("Show icons")
+			.setDesc("Show icons inside hexes if specified.")
+			.addToggle((t) => {
+				t.setValue(this.plugin.settings.showIcons);
+				t.onChange(async (v) => {
+					this.plugin.settings.showIcons = v;
+					await this.plugin.saveSettings();
+					this.plugin.app.workspace.trigger(
+						"hexflower:update-settings"
+					);
+				});
+			});
+
+		new Setting(containerEl)
+			.setName("Icon opacity")
+			.setDesc("Icon image opacity.")
+			.addSlider((t) => {
+				t.setDynamicTooltip();
+				t.setValue(this.plugin.settings.iconOpacity * 100);
+				t.onChange(async (v) => {
+					this.plugin.settings.iconOpacity = v / 100;
 					await this.plugin.saveSettings();
 					this.plugin.app.workspace.trigger(
 						"hexflower:update-settings"

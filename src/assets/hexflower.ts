@@ -5,19 +5,78 @@ export const HexflowerImage = `
    viewBox="0 0 210 227.23264"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+   <defs id="hexflower-defs">
+    <pattern id="ic1" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+      <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic2" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+     <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic3" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+    <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic4" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+      <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic5" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+     <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic6" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+    <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic7" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+      <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic8" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+     <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic9" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+    <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic10" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+      <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic11" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+     <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic12" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+    <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic13" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+      <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic14" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+     <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic15" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+    <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic16" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+      <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic17" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+     <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic18" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+    <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+    <pattern id="ic19" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 64 64">
+    <image x="0%" y="0%" width="64" height="64" xlink:href=""></image>
+    </pattern>
+   </defs>
   <g
      id="g19690">
     <polygon
        points="39.75,91.013052 13.65,91.013052 0.6,68.409789 13.65,45.806526 39.75,45.806526 52.8,68.409789 "
-       style="fill:none;fill-opacity:1;stroke:none;stroke-width:1.2;stroke-linecap:round"
-       id="hf1" />
+       style="fill:none;fill-opacity:0.5;stroke:none;stroke-width:1.2;stroke-linecap:round"
+       id="hf1" ></polygon>
     <polygon
        points="39.75,136.21958 13.65,136.21958 0.6,113.61632 13.65,91.013052 39.75,91.013052 52.8,113.61632 "
-       style="fill:none;fill-opacity:1;stroke:none;stroke-width:1.2;stroke-linecap:round"
+       style="fill:none;fill-opacity:0.5;stroke:none;stroke-width:1.2;stroke-linecap:round"
        id="hf2" />
     <polygon
        points="39.75,181.4261 13.65,181.4261 0.6,158.82284 13.65,136.21958 39.75,136.21958 52.8,158.82284 "
-       style="fill:none;fill-opacity:1;stroke:none;stroke-width:1.2;stroke-linecap:round"
+       style="fill:none;fill-opacity:0.5;stroke:none;stroke-width:1.2;stroke-linecap:round"
        id="hf3" />
     <polygon
        points="78.9,68.409789 52.8,68.409789 39.75,45.806526 52.8,23.203263 78.9,23.203263 91.95,45.806526 "

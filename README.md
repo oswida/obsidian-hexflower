@@ -10,7 +10,7 @@ In the hexflower definition we do not use any of the official hexmap coordinate 
 
 ## Hexflower block format
 
-Hexflower widget is inserted as a code block with `hexflower` keyword.
+Hexflower widget is inserted as a code block with `hexflower` keyword. You can specify text value for each hex and optional icon. Text values for all 19 hexes are required but icons are optional.
 
 <pre>
 
@@ -18,6 +18,7 @@ Hexflower widget is inserted as a code block with `hexflower` keyword.
 name: Name of your hexflower
 author: original author if applicable
 source: and some link to the source
+current: 8
 navigation:
   - name: First navigation hex
     n: 12
@@ -57,8 +58,11 @@ values:
   - Value at hex number 17
   - Value at hex number 18
   - Value at hex number 19
-  - Value at hex number 20  
-current: 8
+icons:
+  - Icon path for hex number 1
+  - Icon path for hex number 2
+  - Icon path for hex number 3
+  ...
 ```
 </pre>
 
@@ -69,6 +73,7 @@ current: 8
 - [x] plugin settings with colors and elements visibility
 - [ ] documentation
 - [x] hideable list of hex values below widget (for printing)
+- [x] icons
 
 ### Releasing new releases
 

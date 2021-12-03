@@ -23,7 +23,9 @@ export class HexflowerTemplate {
 		const pre = createDiv();
 		pre.innerHTML = HexflowerImage.trim();
 		pre.className += "hexblock";
+
 		for (let i = 1; i <= 19; i++) {
+			// hex labels
 			let tmp = pre.find("#h" + i);
 			if (tmp) {
 				if (i == this.data.current) {
@@ -41,6 +43,7 @@ export class HexflowerTemplate {
 			}
 			tmp.style.cursor = "help";
 
+			// circles
 			tmp = pre.find("#c" + i);
 			if (tmp) {
 				if (i == this.data.current) {
@@ -52,6 +55,29 @@ export class HexflowerTemplate {
 				} else {
 					tmp.setAttribute("fill", "none");
 					tmp.removeAttribute("data-selected-center");
+				}
+			}
+			// hex icons
+			if (
+				this.data.icons &&
+				this.plugin.settings.showIcons &&
+				i - 1 < this.data.icons.length
+			) {
+				const hexagon = pre.find("#hf" + i);
+				const fname = this.data.icons[i - 1];
+				const img = this.plugin.app.vault
+					.getFiles()
+					.filter((f) => f.path == fname);
+				if (img && img.length > 0) {
+					const ii = pre.find("#ic" + i);
+					const im = ii.find("image");
+					im.setAttribute(
+						"xlink:href",
+						this.plugin.app.vault.getResourcePath(img[0])
+					);
+					hexagon.style.fill = "url(#ic" + i + ")";
+					hexagon.style.fillOpacity =
+						this.plugin.settings.iconOpacity.toString();
 				}
 			}
 		}
