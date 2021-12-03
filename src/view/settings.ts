@@ -13,28 +13,30 @@ export interface HexflowerPluginSettings {
 	showValueTooltips: boolean;
 	showIcons: boolean;
 	iconOpacity: number;
+	showNumbers: boolean;
 }
 
 export const DEFAULT_SETTINGS_DARK: HexflowerPluginSettings = {
 	navDiceColor: "#DAA520",
 	navDirectionColor: "#5f9ea0",
 	navHexColor: "#333333",
-	selectedHexColor: "#FF7F50",
+	selectedHexColor: "#1bde17",
 	lineHexColor: "#bbbbbb",
 	textHexColor: "#ffffff",
 	resultColor: "#9acd32",
 	centerResult: false,
 	showValueTooltips: true,
 	showValues: false,
-	iconOpacity: 0.5,
+	iconOpacity: 0.2,
 	showIcons: true,
+	showNumbers: true,
 };
 
 export const DEFAULT_SETTINGS_LIGHT: HexflowerPluginSettings = {
 	navDiceColor: "#DAA520",
 	navDirectionColor: "#275d5e",
 	navHexColor: "#cccccc",
-	selectedHexColor: "#fa5011",
+	selectedHexColor: "#1bde17",
 	lineHexColor: "#bbbbbb",
 	textHexColor: "#000000",
 	resultColor: "#547512",
@@ -43,6 +45,7 @@ export const DEFAULT_SETTINGS_LIGHT: HexflowerPluginSettings = {
 	showValues: false,
 	iconOpacity: 0.5,
 	showIcons: true,
+	showNumbers: true,
 };
 
 import HexflowerPlugin from "main";
@@ -152,6 +155,20 @@ export class HexflowerSettingsTab extends PluginSettingTab {
 				t.setValue(this.plugin.settings.iconOpacity * 100);
 				t.onChange(async (v) => {
 					this.plugin.settings.iconOpacity = v / 100;
+					await this.plugin.saveSettings();
+					this.plugin.app.workspace.trigger(
+						"hexflower:update-settings"
+					);
+				});
+			});
+
+		new Setting(containerEl)
+			.setName("Show numbers")
+			.setDesc("Show hex numbers.")
+			.addToggle((t) => {
+				t.setValue(this.plugin.settings.showNumbers);
+				t.onChange(async (v) => {
+					this.plugin.settings.showNumbers = v;
 					await this.plugin.saveSettings();
 					this.plugin.app.workspace.trigger(
 						"hexflower:update-settings"

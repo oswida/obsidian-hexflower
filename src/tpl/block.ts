@@ -43,5 +43,9 @@ values:
   - Value for hex 17
   - Value for hex 18
   - Value for hex 19
+icons:
+  1: Icon for hex 1
+  2: Icon for hex 2
+  5: Icon for hex 5 
 \`\`\`
 `;

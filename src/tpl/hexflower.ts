@@ -11,16 +11,24 @@ export class HexflowerTemplate {
 	constructor(plugin: HexflowerPlugin, data: HfDef) {
 		this.data = data;
 		this.plugin = plugin;
+		this.view = createDiv();
 		this.refresh();
 		this.plugin.registerEvent(
 			this.plugin.app.workspace.on("hexflower:update-colors", () => {
 				this.updateColors();
 			})
 		);
+		this.plugin.registerEvent(
+			this.plugin.app.workspace.on("hexflower:update-settings", () => {
+				this.refresh();
+			})
+		);
 	}
 
 	refresh() {
-		const pre = createDiv();
+		const pre = this.view;
+		pre.empty();
+
 		pre.innerHTML = HexflowerImage.trim();
 		pre.className += "hexblock";
 
@@ -28,7 +36,9 @@ export class HexflowerTemplate {
 			// hex labels
 			let tmp = pre.find("#h" + i);
 			if (tmp) {
-				if (i == this.data.current) {
+				if (!this.plugin.settings.showNumbers) {
+					tmp.style.fill = "none";
+				} else if (i == this.data.current) {
 					tmp.style.fill = this.plugin.settings.selectedHexColor;
 					tmp.setAttribute("data-selected", "true");
 				} else {
@@ -36,34 +46,37 @@ export class HexflowerTemplate {
 					tmp.removeAttribute("data-selected");
 				}
 			}
-			if (this.plugin.settings.showValueTooltips) {
-				tmp.setAttribute("aria-label", this.data.values[i - 1]);
-			} else {
-				tmp.removeAttribute("aria-label");
-			}
-			tmp.style.cursor = "help";
+			// if (this.plugin.settings.showValueTooltips) {
+			// 	tmp.setAttribute("aria-label", this.data.values[i - 1]);
+			// } else {
+			// 	tmp.removeAttribute("aria-label");
+			// }
+			// tmp.style.cursor = "help";
 
-			// circles
-			tmp = pre.find("#c" + i);
-			if (tmp) {
+			const hexagon = pre.find("#hf" + i);
+
+			// hex selection
+			if (hexagon) {
 				if (i == this.data.current) {
-					tmp.setAttribute(
-						"fill",
-						this.plugin.settings.selectedHexColor
-					);
-					tmp.setAttribute("data-selected-center", "true");
+					hexagon.style.stroke =
+						this.plugin.settings.selectedHexColor;
+					hexagon.style.strokeWidth = "3";
 				} else {
-					tmp.setAttribute("fill", "none");
-					tmp.removeAttribute("data-selected-center");
+					hexagon.style.stroke = "none";
+				}
+				if (this.plugin.settings.showValueTooltips) {
+					hexagon.setAttribute("aria-label", this.data.values[i - 1]);
+				} else {
+					hexagon.removeAttribute("aria-label");
 				}
 			}
+
 			// hex icons
 			if (
 				this.data.icons &&
 				this.plugin.settings.showIcons &&
-				i - 1 < this.data.icons.length
+				this.data.icons[i - 1]
 			) {
-				const hexagon = pre.find("#hf" + i);
 				const fname = this.data.icons[i - 1];
 				const img = this.plugin.app.vault
 					.getFiles()
@@ -79,6 +92,8 @@ export class HexflowerTemplate {
 					hexagon.style.fillOpacity =
 						this.plugin.settings.iconOpacity.toString();
 				}
+			} else {
+				hexagon.style.fill = "transparent";
 			}
 		}
 
@@ -87,8 +102,6 @@ export class HexflowerTemplate {
 			if (!l.getAttribute("data-finish-line"))
 				l.style.stroke = this.plugin.settings.lineHexColor;
 		});
-
-		this.view = pre;
 	}
 
 	updateColors() {

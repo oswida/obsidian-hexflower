@@ -18,7 +18,7 @@ export interface HfDef {
 	source: string;
 	navigation: HfNavDef[];
 	values: string[];
-	icons: string[];
+	icons: Record<number, string>[];
 	current: number;
 }
 

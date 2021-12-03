@@ -10,7 +10,9 @@ In the hexflower definition we do not use any of the official hexmap coordinate 
 
 ## Hexflower block format
 
-Hexflower widget is inserted as a code block with `hexflower` keyword. You can specify text value for each hex and optional icon. Text values for all 19 hexes are required but icons are optional.
+Hexflower widget is inserted as a code block with `hexflower` keyword. You can specify text value for each hex and optional icon. 
+Text values for all 19 hexes are required and should be specified in order.
+Icons are optional and as you can see in the example, they can be specified for a selected hex only. One of the great sources of icons could be <https://game-icons.net/>. Plugin accepts PNG, JPG and SVG images.
 
 <pre>
 
@@ -59,9 +61,9 @@ values:
   - Value at hex number 18
   - Value at hex number 19
 icons:
-  - Icon path for hex number 1
-  - Icon path for hex number 2
-  - Icon path for hex number 3
+  1: Icon path for hex number 1
+  2: Icon path for hex number 2
+  5: Icon path for hex number 5
   ...
 ```
 </pre>
