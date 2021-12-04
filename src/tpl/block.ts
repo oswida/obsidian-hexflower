@@ -21,7 +21,7 @@ navigation:
     s: 6
     sw: 8,9
     nw: 11,14
-    in: null
+    in: 
     roll: 1d6+1d8
 values:
   - Value for hex 1

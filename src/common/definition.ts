@@ -1,5 +1,7 @@
 // Hexflower definition format (yaml)
 
+import { App } from "obsidian";
+
 export interface HfNavDef {
 	name: string;
 	n: string;
@@ -22,7 +24,29 @@ export interface HfDef {
 	current: number;
 }
 
-export const HfParse = (data: any): HfDef => {
+const loadFromTemplate = (app: App, path: string): any => {
+	const fl = app.vault.getMarkdownFiles().filter((f) => {
+		return f.path == (path.endsWith(".md") ? path : path + ".md");
+	});
+	if (fl.length > 0) {
+		let fm = app.metadataCache.getFileCache(fl[0])?.frontmatter;
+		return fm;
+	}
+	return null;
+};
+
+export const HfParse = (app: App, src: any): HfDef => {
+	let data = src;
+	if (data.template && data.template.trim() != "") {
+		const tpl = loadFromTemplate(app, data.template);
+		if (tpl) {
+			const name = data.name;
+			data = tpl;
+			data.name = name;
+		} else {
+			return <HfDef>{};
+		}
+	}
 	const retv = <HfDef>{
 		name: data.name,
 		author: data.author ? data.author : "Unknown",

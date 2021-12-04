@@ -1,5 +1,7 @@
 # Obsidian Hexflower Plugin
 
+![Screenshot](src/assets/screenshot.png)
+
 This is a widget simulating the behaviour of a Hexflower engine. A lot of information about Hexflower concept can be found at Goblin's Henchman site: <https://goblinshenchman.wordpress.com/category/hex-flower/>
 
 ## Hex positions
@@ -10,7 +12,7 @@ In the hexflower definition we do not use any of the official hexmap coordinate 
 
 ## Hexflower block format
 
-Hexflower widget is inserted as a code block with `hexflower` keyword. You can specify text value for each hex and optional icon. 
+Hexflower widget is inserted as a code block with `hexflower` keyword. You can specify text value for each hex and optional icon.
 Text values for all 19 hexes are required and should be specified in order.
 Icons are optional and as you can see in the example, they can be specified for a selected hex only. One of the great sources of icons could be <https://game-icons.net/>. Plugin accepts PNG, JPG and SVG images.
 
@@ -61,19 +63,27 @@ values:
   - Value at hex number 18
   - Value at hex number 19
 icons:
-  1: Icon path for hex number 1
+  1: Icon path for hex number 1 like "images/icon1.png"
   2: Icon path for hex number 2
   5: Icon path for hex number 5
   ...
 ```
 </pre>
 
+Alternatively, you can define the same hexflower inside a **note frontmatter section** and use it as a template. The only thing you need to do next is to define hexflower block with a `template` attribute. Please remember to include `name` attribute in your specification, because hexflower blocks are recognized and searched by their names (Thus means that names put inside a template text are replaced by the ones specified in a block).
+
+<pre>
+```hexflower
+name: Hexflower from template
+template: templates/weather block
+```
+</pre>
+
 ## TODO
 
 - [ ] hexflower block validation
-- [ ] block templates
+- [x] block templates
 - [x] plugin settings with colors and elements visibility
-- [ ] documentation
 - [x] hideable list of hex values below widget (for printing)
 - [x] icons
 

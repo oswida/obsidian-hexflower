@@ -7,7 +7,7 @@ import {
 } from "obsidian";
 import { ResetModal } from "view/modal";
 import { HfDef } from "../common/definition";
-import { FindHexflowerText, ReplaceInCurrentFile } from "../common/parser";
+import { FindHexflowerText, ReplaceInCurrentFile } from "../common/util";
 import { HexflowerTemplate } from "../tpl/hexflower";
 import { HexNavTemplate } from "../tpl/navigation";
 
@@ -41,6 +41,7 @@ export class HexView extends Events {
 		this.plugin = plugin;
 		this.context = context;
 		this.data = data;
+		this.view = createDiv();
 
 		this.hFlower = new HexflowerTemplate(this.plugin, this.data);
 		this.refresh();
@@ -57,7 +58,9 @@ export class HexView extends Events {
 	}
 
 	refresh() {
-		const mainView = createDiv();
+		const mainView = this.view;
+		mainView.empty();
+
 		mainView.innerHTML = tpl.trim();
 
 		const title = mainView.find("#title");
@@ -124,27 +127,13 @@ export class HexView extends Events {
 			}
 		}
 
-		//credentials
-		// const cr = mainView.find("#credentials");
-		// if (cr) {
-		// 	if (this.data.source.trim() != "") {
-		// 		const link = createEl("a");
-		// 		link.href = this.data.source;
-		// 		link.style.textDecoration = "none";
-		// 		link.style.textDecorationColor = "grey";
-		// 		link.innerHTML = this.data.author;
-		// 		cr.appendChild(link);
-		// 	} else {
-		// 		cr.innerHTML = this.data.author;
-		// 	}
-		// }
-
 		this.view = mainView;
 	}
 
 	async setSelected(num: number) {
 		this.data.current = num;
 		const result = await FindHexflowerText(this.plugin.app, this.data.name);
+		if (!result) return;
 		ReplaceInCurrentFile(
 			this.plugin.app,
 			result.filePosition,

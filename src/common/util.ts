@@ -31,11 +31,13 @@ export const FindHexflowerText = async (
 			"```hexflower[^`]*name:\\s*" + name + "[^`]*```"
 		);
 		const result = regHex.exec(content);
-		return {
-			fullContent: result[0],
-			filePosition: result.index,
-			length: result[0].length,
-		} as HexflowerBlock;
+		if (result) {
+			return {
+				fullContent: result[0],
+				filePosition: result.index,
+				length: result[0].length,
+			} as HexflowerBlock;
+		}
 	}
 	return null;
 };

@@ -46,12 +46,6 @@ export class HexflowerTemplate {
 					tmp.removeAttribute("data-selected");
 				}
 			}
-			// if (this.plugin.settings.showValueTooltips) {
-			// 	tmp.setAttribute("aria-label", this.data.values[i - 1]);
-			// } else {
-			// 	tmp.removeAttribute("aria-label");
-			// }
-			// tmp.style.cursor = "help";
 
 			const hexagon = pre.find("#hf" + i);
 

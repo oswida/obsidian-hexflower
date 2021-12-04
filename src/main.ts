@@ -11,6 +11,7 @@ import {
 	HexflowerPluginSettings,
 	HexflowerSettingsTab,
 } from "view/settings";
+import { HfParse } from "./common/definition";
 import { HexflowerBlockSample } from "./tpl/block";
 import { DEFAULT_SETTINGS_LIGHT } from "./view/settings";
 
@@ -36,8 +37,12 @@ export default class HexflowerPlugin extends Plugin {
 				ctx: MarkdownPostProcessorContext
 			) => {
 				const hexdata = parseYaml(source);
-				this.hexView = new HexView(this, hexdata, ctx);
-				el.appendChild(this.hexView.view);
+				const hexView = new HexView(
+					this,
+					HfParse(this.app, hexdata),
+					ctx
+				);
+				el.appendChild(hexView.view);
 			}
 		);
 
