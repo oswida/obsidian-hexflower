@@ -1,5 +1,5 @@
 import { NavigationImage } from "assets/navigation";
-import { HfNavDef } from "common/definition";
+import { HfNavDef } from "common/blockdef";
 import { RollHex } from "common/roll";
 import HexflowerPlugin from "main";
 import { Notice } from "obsidian";

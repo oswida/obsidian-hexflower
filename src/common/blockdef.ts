@@ -1,6 +1,6 @@
 // Hexflower definition format (yaml)
-
 import { App } from "obsidian";
+import { AddError, ErrorInfo } from "./util";
 
 export interface HfNavDef {
 	name: string;
@@ -19,10 +19,18 @@ export interface HfDef {
 	author: string;
 	source: string;
 	navigation: HfNavDef[];
-	values: string[];
-	icons: Record<number, string>[];
+	values: Record<number, string>;
+	icons: Record<number, string>;
 	current: number;
+
+	errors: ErrorInfo[];
 }
+
+export const HfWithError = (scope: string, text: string): HfDef => {
+	return <HfDef>{
+		errors: AddError([], scope, text),
+	};
+};
 
 const loadFromTemplate = (app: App, path: string): any => {
 	const fl = app.vault.getMarkdownFiles().filter((f) => {
@@ -36,6 +44,9 @@ const loadFromTemplate = (app: App, path: string): any => {
 };
 
 export const HfParse = (app: App, src: any): HfDef => {
+	if (!src || src == null) {
+		return HfWithError("hfparse", "Bad hexflower specification");
+	}
 	let data = src;
 	if (data.template && data.template.trim() != "") {
 		const tpl = loadFromTemplate(app, data.template);
@@ -43,10 +54,15 @@ export const HfParse = (app: App, src: any): HfDef => {
 			const name = data.name;
 			data = tpl;
 			data.name = name;
+			data.errors = [];
 		} else {
-			return <HfDef>{};
+			return HfWithError(
+				"hfparse",
+				"Cannot find hexflower template " + data.template
+			);
 		}
 	}
+
 	const retv = <HfDef>{
 		name: data.name,
 		author: data.author ? data.author : "Unknown",
@@ -55,8 +71,9 @@ export const HfParse = (app: App, src: any): HfDef => {
 		values: data.values ? data.values : [],
 		icons: data.icons ? data.icons : [],
 		current: data.current ? data.current : 10,
+		errors: [],
 	};
-	if (data.navigation) {
+	if (data.navigation && data.navigation.length > 0) {
 		retv.navigation = data.navigation.map((it: any) => {
 			const nv = <HfNavDef>{
 				name: it.name,
@@ -71,51 +88,8 @@ export const HfParse = (app: App, src: any): HfDef => {
 			};
 			return nv;
 		});
+	} else {
+		return HfWithError("hfparse", "No navigation hexes were defined");
 	}
 	return retv;
 };
-
-/*
-name: Siege Events
-source: https://penpaperanddice.home.blog/2019/11/20/to-the-battlements/
-navigation:
-  - name: Nav one
-    n: 12
-    ne: 2,3
-    se: 4,5
-    s: 6
-    sw: 8,9
-    nw: 10
-    in: 23
-    roll: 2d6
-  - name: Nav to
-    n: 12
-    ne: 2,3
-    se: 4,5
-    s: 6
-    sw: 8,9
-    nw: 11,14
-    in: null
-    roll: 1d6+1d8
-values:
-  - Fire! The supplies are in danger
-  - Poisoning! The water supplies are spoiled.
-  - Sappers! The walls are under attack from underground.
-  - Disease! Death spreads in the keep.
-  - Sabotage! Tools and weapons are ruined.
-  - Assassins! The officers are under attack.
-  - Deserters! Mutineers have found a way out.
-  - Treason! The gates are opened from the inside.
-  - Mutiny! The besieged demand resolution.
-  - Volunteers from the civilians have bolstered our ranks.
-  - Poisoning! The water supplies are spoiled.
-  - Sabotage! Tools and weapons are ruined.
-  - Famine! Food is spoiled.
-  - Deserters! Mutineers have found a way out.,
-  - Sappers! The walls are under attack from underground.
-  - Fire! The supplies are in danger
-  - Mutiny! The besieged demand resolution.
-  - Famine! Food is spoiled.
-  - Deserters! Mutineers have found a way out.
-current: 11
-*/

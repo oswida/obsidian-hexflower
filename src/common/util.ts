@@ -17,7 +17,7 @@ const currentFileContent = async (app: App): Promise<string | null> => {
 const updateCurrentFileContent = async (app: App, data: string) => {
 	const activeView = app.workspace.getActiveViewOfType(MarkdownView);
 	if (activeView) {
-		await app.vault.modify(activeView.file, data);
+		await app.vault.modify(activeView.file, data.replace("errors: []", ""));
 	}
 };
 
@@ -66,3 +66,20 @@ export interface NavigationBlock {
 	in: string;
 	roll: string;
 }
+
+export interface ErrorInfo {
+	scope: string;
+	text: string;
+}
+
+export const AddError = (
+	list: ErrorInfo[],
+	scope: string,
+	text: string
+): ErrorInfo[] => {
+	list.push({
+		scope: scope,
+		text: text,
+	});
+	return list;
+};

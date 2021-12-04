@@ -24,25 +24,25 @@ navigation:
     in: 
     roll: 1d6+1d8
 values:
-  - Value for hex 1
-  - Value for hex 2
-  - Value for hex 3
-  - Value for hex 4
-  - Value for hex 5
-  - Value for hex 6
-  - Value for hex 7
-  - Value for hex 8
-  - Value for hex 9
-  - Value for hex 10
-  - Value for hex 11
-  - Value for hex 12
-  - Value for hex 13
-  - Value for hex 14
-  - Value for hex 15
-  - Value for hex 16
-  - Value for hex 17
-  - Value for hex 18
-  - Value for hex 19
+  1: Value for hex 1
+  2: Value for hex 2
+  3: Value for hex 3
+  4: Value for hex 4
+  5: Value for hex 5
+  6: Value for hex 6
+  7: Value for hex 7
+  8: Value for hex 8
+  9: Value for hex 9
+  10: Value for hex 10
+  11: Value for hex 11
+  12: Value for hex 12
+  13: Value for hex 13
+  14: Value for hex 14
+  15: Value for hex 15
+  16: Value for hex 16
+  17: Value for hex 17
+  18: Value for hex 18
+  19: Value for hex 19
 icons:
   1: Icon for hex 1
   2: Icon for hex 2

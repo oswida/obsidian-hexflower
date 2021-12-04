@@ -1,5 +1,5 @@
 import { HexflowerImage } from "assets/hexflower";
-import { HfDef } from "common/definition";
+import { HfDef } from "common/blockdef";
 import HexflowerPlugin from "main";
 
 // Main hexflower view from SVG image
@@ -7,9 +7,11 @@ export class HexflowerTemplate {
 	data: HfDef;
 	view: HTMLDivElement;
 	plugin: HexflowerPlugin;
+	hasError: boolean;
 
 	constructor(plugin: HexflowerPlugin, data: HfDef) {
 		this.data = data;
+		this.hasError = data.errors.length != 0;
 		this.plugin = plugin;
 		this.view = createDiv();
 		this.refresh();
@@ -26,6 +28,8 @@ export class HexflowerTemplate {
 	}
 
 	refresh() {
+		if (this.hasError) return;
+
 		const pre = this.view;
 		pre.empty();
 
@@ -58,8 +62,9 @@ export class HexflowerTemplate {
 				} else {
 					hexagon.style.stroke = "none";
 				}
+				const val = this.data.values[i] ? this.data.values[i] : "";
 				if (this.plugin.settings.showValueTooltips) {
-					hexagon.setAttribute("aria-label", this.data.values[i - 1]);
+					hexagon.setAttribute("aria-label", val);
 				} else {
 					hexagon.removeAttribute("aria-label");
 				}
@@ -69,9 +74,9 @@ export class HexflowerTemplate {
 			if (
 				this.data.icons &&
 				this.plugin.settings.showIcons &&
-				this.data.icons[i - 1]
+				this.data.icons[i]
 			) {
-				const fname = this.data.icons[i - 1];
+				const fname = this.data.icons[i];
 				const img = this.plugin.app.vault
 					.getFiles()
 					.filter((f) => f.path == fname);
@@ -99,6 +104,7 @@ export class HexflowerTemplate {
 	}
 
 	updateColors() {
+		if (this.hasError) return;
 		const nodes = this.plugin.app.workspace.containerEl.findAll(
 			"#hexflower-main-area"
 		);

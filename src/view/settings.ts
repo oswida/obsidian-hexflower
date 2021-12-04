@@ -66,6 +66,90 @@ export class HexflowerSettingsTab extends PluginSettingTab {
 
 		containerEl.createEl("h2", { text: "Hexflower settings" });
 
+		new Setting(containerEl)
+			.setName("Center result text")
+			.setDesc("Center text in the result area.")
+			.addToggle((t) => {
+				t.setValue(this.plugin.settings.centerResult);
+				t.onChange(async (v) => {
+					this.plugin.settings.centerResult = v;
+					await this.plugin.saveSettings();
+					this.plugin.app.workspace.trigger(
+						"hexflower:update-settings"
+					);
+				});
+			});
+
+		new Setting(containerEl)
+			.setName("Show value tooltips")
+			.setDesc("Show tooltips with hex values.")
+			.addToggle((t) => {
+				t.setValue(this.plugin.settings.showValueTooltips);
+				t.onChange(async (v) => {
+					this.plugin.settings.showValueTooltips = v;
+					await this.plugin.saveSettings();
+				});
+			});
+
+		new Setting(containerEl)
+			.setName("Show value list")
+			.setDesc("Show hexflower values below the result field.")
+			.addToggle((t) => {
+				t.setValue(this.plugin.settings.showValues);
+				t.onChange(async (v) => {
+					this.plugin.settings.showValues = v;
+					await this.plugin.saveSettings();
+					this.plugin.app.workspace.trigger(
+						"hexflower:update-settings"
+					);
+				});
+			});
+
+		new Setting(containerEl)
+			.setName("Show icons")
+			.setDesc("Show icons inside hexes if specified.")
+			.addToggle((t) => {
+				t.setValue(this.plugin.settings.showIcons);
+				t.onChange(async (v) => {
+					this.plugin.settings.showIcons = v;
+					await this.plugin.saveSettings();
+					this.plugin.app.workspace.trigger(
+						"hexflower:update-settings"
+					);
+				});
+			});
+
+		new Setting(containerEl)
+			.setName("Icon image opacity")
+			.setDesc("")
+			.addSlider((t) => {
+				t.setDynamicTooltip();
+				t.setValue(this.plugin.settings.iconOpacity * 100);
+				t.onChange(async (v) => {
+					this.plugin.settings.iconOpacity = v / 100;
+					await this.plugin.saveSettings();
+					this.plugin.app.workspace.trigger(
+						"hexflower:update-settings"
+					);
+				});
+			});
+
+		new Setting(containerEl)
+			.setName("Show hex numbers")
+			.setDesc("")
+			.addToggle((t) => {
+				t.setValue(this.plugin.settings.showNumbers);
+				t.onChange(async (v) => {
+					this.plugin.settings.showNumbers = v;
+					await this.plugin.saveSettings();
+					this.plugin.app.workspace.trigger(
+						"hexflower:update-settings"
+					);
+				});
+			});
+
+		new Setting(containerEl).setHeading().setName("Colors");
+
 		const div = containerEl.createEl("div", { cls: "centered" });
 		const btn = containerEl.createEl("button", {
 			text: "Defaults: Dark Theme",
@@ -94,92 +178,6 @@ export class HexflowerSettingsTab extends PluginSettingTab {
 		};
 		div.appendChild(btn2);
 
-		new Setting(containerEl)
-			.setName("Center result text")
-			.setDesc("Center text in the result area.")
-			.addToggle((t) => {
-				t.setValue(this.plugin.settings.centerResult);
-				t.onChange(async (v) => {
-					this.plugin.settings.centerResult = v;
-					await this.plugin.saveSettings();
-					this.plugin.app.workspace.trigger(
-						"hexflower:update-settings"
-					);
-				});
-			});
-
-		new Setting(containerEl)
-			.setName("Show value tooltips")
-			.setDesc("Show tooltips with hex values.")
-			.addToggle((t) => {
-				t.setValue(this.plugin.settings.showValueTooltips);
-				t.onChange(async (v) => {
-					this.plugin.settings.showValueTooltips = v;
-					await this.plugin.saveSettings();
-				});
-			});
-
-		new Setting(containerEl)
-			.setName("Show values")
-			.setDesc("Show hexflower values below the result field.")
-			.addToggle((t) => {
-				t.setValue(this.plugin.settings.showValues);
-				t.onChange(async (v) => {
-					this.plugin.settings.showValues = v;
-					await this.plugin.saveSettings();
-					this.plugin.app.workspace.trigger(
-						"hexflower:update-settings"
-					);
-				});
-			});
-
-		new Setting(containerEl)
-			.setName("Show icons")
-			.setDesc("Show icons inside hexes if specified.")
-			.addToggle((t) => {
-				t.setValue(this.plugin.settings.showIcons);
-				t.onChange(async (v) => {
-					this.plugin.settings.showIcons = v;
-					await this.plugin.saveSettings();
-					this.plugin.app.workspace.trigger(
-						"hexflower:update-settings"
-					);
-				});
-			});
-
-		new Setting(containerEl)
-			.setName("Icon opacity")
-			.setDesc("Icon image opacity.")
-			.addSlider((t) => {
-				t.setDynamicTooltip();
-				t.setValue(this.plugin.settings.iconOpacity * 100);
-				t.onChange(async (v) => {
-					this.plugin.settings.iconOpacity = v / 100;
-					await this.plugin.saveSettings();
-					this.plugin.app.workspace.trigger(
-						"hexflower:update-settings"
-					);
-				});
-			});
-
-		new Setting(containerEl)
-			.setName("Show numbers")
-			.setDesc("Show hex numbers.")
-			.addToggle((t) => {
-				t.setValue(this.plugin.settings.showNumbers);
-				t.onChange(async (v) => {
-					this.plugin.settings.showNumbers = v;
-					await this.plugin.saveSettings();
-					this.plugin.app.workspace.trigger(
-						"hexflower:update-settings"
-					);
-				});
-			});
-
-		containerEl.createEl("div", {
-			cls: "centered",
-			text: "Colors",
-		});
 		const diceColor = new Setting(containerEl)
 			.setName("Dice field color")
 			.setDesc("The color of the dice field in the navigation hex.");

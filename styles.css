@@ -24,6 +24,10 @@
 	/* border-radius: 5px; */
 }
 
+.error {
+	color: #ff2222;
+}
+
 .hfmodalbtns {
 	text-align: right;
 	padding: 3px;
@@ -85,4 +89,8 @@
 
 .settingsResetBtn {
 	margin-bottom: 1em;
+}
+
+.bold {
+	font-weight: bold;
 }

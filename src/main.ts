@@ -11,7 +11,7 @@ import {
 	HexflowerPluginSettings,
 	HexflowerSettingsTab,
 } from "view/settings";
-import { HfParse } from "./common/definition";
+import { HfParse } from "./common/blockdef";
 import { HexflowerBlockSample } from "./tpl/block";
 import { DEFAULT_SETTINGS_LIGHT } from "./view/settings";
 
@@ -27,8 +27,10 @@ export default class HexflowerPlugin extends Plugin {
 	hexView: HexView;
 
 	async onload() {
+		// settings
 		await this.loadSettings();
 
+		// hf markdown postprocessor
 		this.registerMarkdownCodeBlockProcessor(
 			"hexflower",
 			(
@@ -36,16 +38,13 @@ export default class HexflowerPlugin extends Plugin {
 				el: HTMLElement,
 				ctx: MarkdownPostProcessorContext
 			) => {
-				const hexdata = parseYaml(source);
-				const hexView = new HexView(
-					this,
-					HfParse(this.app, hexdata),
-					ctx
-				);
+				const hexdata = HfParse(this.app, parseYaml(source));
+				const hexView = new HexView(this, hexdata, ctx);
 				el.appendChild(hexView.view);
 			}
 		);
 
+		// command for hf block generation
 		this.addCommand({
 			id: "generate-hexflower-block",
 			name: "Generate hexflower block",

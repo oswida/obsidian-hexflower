@@ -1,5 +1,5 @@
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
-import { HfNavDef } from "common/definition";
+import { HfNavDef } from "common/blockdef";
 
 const HexMoveMap: Record<string, any> = {
 	"1": {
