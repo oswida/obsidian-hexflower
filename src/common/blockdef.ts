@@ -26,10 +26,27 @@ export interface HfDef {
 	errors: ErrorInfo[];
 }
 
-export const HfWithError = (scope: string, text: string): HfDef => {
+export const HfWithError = (scope: string, ...text: string[]): HfDef => {
+	var err: ErrorInfo[] = [];
+	text.forEach((it) => AddError(err, scope, it));
 	return <HfDef>{
-		errors: AddError([], scope, text),
+		errors: err,
 	};
+};
+
+const missingIconFiles = (app: App, list: string[]): HfDef | null => {
+	const fl = app.vault
+		.getFiles()
+		.filter((f) => list.contains(f.path))
+		.map((f) => f.path);
+	const missing = list
+		.filter((it) => !fl.contains(it))
+		.map((it) => "Icon file " + it + " is missing.");
+	if (missing.length > 0) {
+		return HfWithError("hfparse", ...missing);
+	}
+
+	return null;
 };
 
 const loadFromTemplate = (app: App, path: string): any => {
@@ -68,8 +85,8 @@ export const HfParse = (app: App, src: any): HfDef => {
 		author: data.author ? data.author : "Unknown",
 		source: data.source ? data.source : "",
 		navigation: [],
-		values: data.values ? data.values : [],
-		icons: data.icons ? data.icons : [],
+		values: data.values ? data.values : {},
+		icons: data.icons ? data.icons : {},
 		current: data.current ? data.current : 10,
 		errors: [],
 	};
@@ -90,6 +107,16 @@ export const HfParse = (app: App, src: any): HfDef => {
 		});
 	} else {
 		return HfWithError("hfparse", "No navigation hexes were defined");
+	}
+
+	if (data.icons && Object.keys(data.icons).length > 0) {
+		const rec = data.icons as Record<number, string>;
+		const files = [];
+		for (const [key, value] of Object.entries(rec)) {
+			files.push(value);
+		}
+		const err = missingIconFiles(app, files);
+		if (err != null) return err;
 	}
 	return retv;
 };
