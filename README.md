@@ -67,4 +67,8 @@ template: templates/weather block
 
 ### Manually installing the plugin
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/obsidian-hexflower/`.
+
+### Moving to the official Obsidian repo
+
+Unfortunately, I'm not able to follow official Obsidian guideline regarding using `innerHTML` syntax. This plugin is using a lot of SVG images, taken as a text templates. Constructing them through DOM manipulations would be very time consuming.
